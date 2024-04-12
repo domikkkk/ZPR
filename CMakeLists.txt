@@ -11,18 +11,19 @@ set (CMAKE_MODULE_PATH "${CMAKE_MODULE_PATH};${CMAKE_CURRENT_DIR}/cmake")
 add_executable(${PROJECT_NAME} "src/main.cpp")  # adding main
 
 target_link_libraries(${PROJECT_NAME})
+
+
+# adding qt5
+
+find_package(Qt5 COMPONENTS Widgets Core REQUIRED)
+
+
 # adding subdirectory like in src/compare_files/{DIR_NAME}
 add_subdirectory("src/app/mainwindow")
 add_subdirectory("src/compare_files/cos")
 
 
-# adding qt5
-find_package(Qt5 REQUIRED COMPONENTS Core)
-find_package(Qt5 REQUIRED COMPONENTS Widgets)
-# qt_standard_project_setup()
 target_link_libraries(${PROJECT_NAME} PUBLIC Qt5::Core Qt5::Widgets mainwindow Cos)
-
-
 
 
 FetchContent_Declare(
@@ -36,4 +37,4 @@ FetchContent_MakeAvailable(Gtest)
 # testing
 add_executable(tests "test/test.cpp")
 
-target_link_libraries(tests gtest gtest_main)
+target_link_libraries(tests gtest gtest_main Cos)
