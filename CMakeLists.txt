@@ -12,13 +12,15 @@ add_executable(${PROJECT_NAME} "src/main.cpp")  # adding main
 
 target_link_libraries(${PROJECT_NAME})
 # adding subdirectory like in src/compare_files/{DIR_NAME}
+add_subdirectory("src/app/mainwindow")
 add_subdirectory("src/compare_files/cos")
 
 
-# adding qt6
-find_package(Qt6 REQUIRED COMPONENTS Core)
+# adding qt5
+find_package(Qt5 REQUIRED COMPONENTS Core)
+find_package(Qt5 REQUIRED COMPONENTS Widgets)
 # qt_standard_project_setup()
-target_link_libraries(${PROJECT_NAME} PRIVATE Qt6::Core Cos)
+target_link_libraries(${PROJECT_NAME} PUBLIC Qt5::Core Qt5::Widgets mainwindow Cos)
 
 
 
