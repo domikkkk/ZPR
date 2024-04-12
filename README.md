@@ -3,10 +3,15 @@
 <project root>
 ├── CMakeLists.txt
 ├── include
-│   └──compare_files
+│   ├── mainwindow.hpp
+│   └── compare_files
 │       └── cos.hpp
 ├── src
 │   ├── main.cpp
+│   ├── app
+│   │   └── mainwindow
+│   │       ├── CMakeLists.txt
+│   │       └── mainwindow.cpp
 │   └── compare_files
 │       └── Cos
 │           ├── CMakeLists.txt
