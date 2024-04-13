@@ -1,5 +1,5 @@
 #include <mainwindow.hpp>
-#include <compare_files/cos.hpp>
+#include <compare_files/kmp.hpp>
 #include <QApplication>
 #include <QtWidgets>
 

@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include <compare_files/cos.hpp>
+#include <compare_files/kmp.hpp>
 
 
 int main(void) {
