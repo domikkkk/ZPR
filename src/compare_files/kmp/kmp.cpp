@@ -50,5 +50,6 @@ std::vector<int> kmpSearch(const std::string &text, const std::string &pattern) 
             }
         }
     }
+    freeArray(prefix_arr);
     return indices;
 }
