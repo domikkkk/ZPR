@@ -5,7 +5,7 @@
 ├── include
 │   ├── mainwindow.hpp
 │   └── compare_files
-│       └── cos.hpp
+│       └── kmp.hpp
 ├── src
 │   ├── main.cpp
 │   ├── app
@@ -13,9 +13,9 @@
 │   │       ├── CMakeLists.txt
 │   │       └── mainwindow.cpp
 │   └── compare_files
-│       └── Cos
+│       └── kmp
 │           ├── CMakeLists.txt
-│           └── cos.cpp
+│           └── kmp.cpp
 └── test
     └── test.cpp
 ```
