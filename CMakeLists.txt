@@ -21,9 +21,12 @@ find_package(Qt5 COMPONENTS Widgets Core REQUIRED)
 # adding subdirectory like in src/compare_files/{DIR_NAME}
 add_subdirectory("src/app/mainwindow")
 add_subdirectory("src/compare_files/kmp")
+add_subdirectory("src/compare_files/block")
+add_subdirectory("src/compare_files/file")
+add_subdirectory("src/compare_files/text_diff")
 
 
-target_link_libraries(${PROJECT_NAME} PUBLIC Qt5::Core Qt5::Widgets mainwindow KMP)
+target_link_libraries(${PROJECT_NAME} PUBLIC Qt5::Core Qt5::Widgets mainwindow KMP Block File TextDiff)
 
 
 FetchContent_Declare(
@@ -37,4 +40,4 @@ FetchContent_MakeAvailable(Gtest)
 # testing
 add_executable(tests "test/test.cpp")
 
-target_link_libraries(tests gtest gtest_main KMP)
+target_link_libraries(tests gtest gtest_main KMP Block File TextDiff)
