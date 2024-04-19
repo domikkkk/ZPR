@@ -1,6 +1,5 @@
 #include <compare_files/kmp.hpp>
 
-
 int *computePreffixArray(const kmp &pattern) {
     // length of the previous longest prefix suffix
     int *prefix_arr = new int[pattern.len];
