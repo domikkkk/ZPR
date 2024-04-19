@@ -1,5 +1,13 @@
-# File structure
+# Needed
+Qt5 installed with:
+```bash
+sudo apt update
+sudo apt install qtbase5-dev
 ```
+
+
+# File structure
+```md
 <project root>
 ├── CMakeLists.txt
 ├── README.md
