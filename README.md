@@ -5,7 +5,10 @@
 ├── include
 │   ├── mainwindow.hpp
 │   └── compare_files
-│       └── kmp.hpp
+│       ├── kmp.hpp
+|       ├── file.hpp
+|       ├── text.hpp
+|       └── textdiff.hpp
 ├── src
 │   ├── main.cpp
 │   ├── app
