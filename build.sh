@@ -8,3 +8,6 @@ cd build
 
 cmake ..
 cmake --build .
+
+mv files_compare ..
+mv tests ..

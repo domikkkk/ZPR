@@ -21,11 +21,11 @@ or
 # How to run?
 to run program:
 ```bash
-./build/files_compare
+./files_compare
 ```
 to run test:
 ```bash
-./build/tests
+./tests
 ```
 
 # File structure
