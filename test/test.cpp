@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include <compare_files/kmp.hpp>
+#include <CompareFiles>
 
 
 TEST(KMPTest, BasicTest) {

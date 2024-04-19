@@ -1,0 +1,4 @@
+#include "compare_files/kmp.hpp"
+#include "compare_files/block.hpp"
+#include "compare_files/file.hpp"
+#include "compare_files/textdiff.hpp"
