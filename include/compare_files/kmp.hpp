@@ -1,6 +1,6 @@
 #ifndef KMP_HPP
 #define KMP_HPP
-
+#pragma once
 #include <string>
 #include <vector>
 

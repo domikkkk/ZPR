@@ -1,14 +1,17 @@
 #ifndef TEXTDIFF_HPP
 #define TEXTDIFF_HPP
+#pragma once
+#include <compare_files/block.hpp>
 
-#include <text.hpp>
 
 class TextDiff {
-    Text original;
-    Text old;
 public:
-    TextDiff(Text original, Text old) : original(original), old(old) {}
-    Text getOriginal() const;
-    Text getOld() const;
-}
+    TextDiff(Block original, Block old) : original(original), old(old) {}
+    Block getOriginal() const;
+    Block getOld() const;
+protected:
+    Block original;
+    Block old;
+};
+
 #endif
