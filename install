@@ -1,0 +1,47 @@
+#!/bin/bash
+
+if [ ! -d "qt" ]; then
+    mkdir qt
+fi
+
+cd qt
+
+# Lista pakietów do pobrania
+packages=(
+    "libegl-dev"
+    "libgl-dev"
+    "libgles-dev"
+    "libglu1-mesa-dev"
+    "qtbase5-dev"
+    "libopengl-dev"
+    "mesa-common-dev"
+    "qtbase5-dev-tools"
+    "libqt5concurrent5"
+    "qt5-qmake"
+    "libqt5core5a"
+    "libqt5widgets5"
+    "build-essential"
+    "libqt5dbus5"
+    "libqt5gui5"
+    "libqt5sql5"
+    "libqt5xml5"
+    "libqt5printsupport5"
+    "libqt5network5"
+    "libvulkan-dev"
+    "libxext-dev"
+    "libqt5test5"
+    "qtchooser"
+    "libqt5opengl5-dev"
+)
+
+for package in "${packages[@]}"
+do
+    # Pobranie pakietu
+    apt-get download "$package"
+    
+    # Wyodrębnienie zawartości paczki
+    dpkg-deb -x "${package}"*.deb .
+
+    # usunięcie
+    rm "${package}"*.deb
+done

@@ -8,6 +8,13 @@ set(CMAKE_CXX_FLAGS "-Wall -Wextra")
 
 set (CMAKE_MODULE_PATH "${CMAKE_MODULE_PATH};${CMAKE_CURRENT_DIR}/cmake")
 
+# set(Qt5_DIR "${CMAKE_CURRENT_SOURCE_DIR}/qt/usr/lib/x86_64-linux-gnu/cmake/Qt5")
+# set(CMAKE_PREFIX_PATH "${CMAKE_CURRENT_SOURCE_DIR}/qt/usr")
+# set(CMAKE_INCLUDE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/qt/usr/include")
+# set(CMAKE_INCLUDE_PATH "${CMAKE_INCLUDE_PATH}; ${CMAKE_CURRENT_SOURCE_DIR}/qt/usr/include/GL")
+# set(CMAKE_LIBRARY_PATH "${CMAKE_CURRENT_SOURCE_DIR}/qt/usr/lib")
+
+
 add_executable(${PROJECT_NAME} "src/main.cpp")  # adding main
 
 target_link_libraries(${PROJECT_NAME})
