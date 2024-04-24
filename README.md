@@ -29,7 +29,7 @@ to run test:
 ```
 
 # File structure
-```md
+```
 <project root>
 ├── CMakeLists.txt
 ├── README.md
@@ -42,24 +42,17 @@ to run test:
 │   │   ├── kmp.hpp
 │   │   └── textdiff.hpp
 │   └── mainwindow.hpp
+├── install
 ├── src
 │   ├── app
-│   │   └── mainwindow
-│   │       ├── CMakeLists.txt
-│   │       └── mainwindow.cpp
+│   │   ├── CMakeLists.txt
+│   │   └── mainwindow.cpp
 │   ├── compare_files
-│   │   ├── block
-│   │   │   ├── CMakeLists.txt
-│   │   │   └── block.cpp
-│   │   ├── file
-│   │   │   ├── CMakeLists.txt
-│   │   │   └── file.cpp
-│   │   ├── kmp
-│   │   │   ├── CMakeLists.txt
-│   │   │   └── kmp.cpp
-│   │   └── text_diff
-│   │       ├── CMakeLists.txt
-│   │       └── textdiff.cpp
+│   │   ├── CMakeLists.txt
+│   │   ├── block.cpp
+│   │   ├── file.cpp
+│   │   ├── kmp.cpp
+│   │   └── textdiff.cpp
 │   └── main.cpp
 └── test
     └── test.cpp
