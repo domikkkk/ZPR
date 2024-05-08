@@ -25,9 +25,9 @@ target_link_libraries(${PROJECT_NAME})
 target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_SOURCE_DIR}/include)
 
 
-# Internet mówi, że trzeba dodać plik nagłówkowy do kompilacje też jak w gre wchodzi macro Q_OBJECT, które jest ponoć potrzebne w jakimś stopniu.
+# Internet mówi, że trzeba dodać plik nagłówkowy do kompilacji też jak w gre wchodzi macro Q_OBJECT, które jest ponoć potrzebne w jakimś stopniu.
 # Cmake jest upośledzony i trzeba mu samemu ustawić plik nagłówkowy do kompilacji, bo mimo tego target_include_directories (wyżej) nie znajduje tego co powinien.
-# Trzeba to dać, bo inaczej nie wie co to Q_OBJECT i nie wie gdzie ma znaleźć tablice funkcji wirtualnych dla konstruktorów,
+# Trzeba to dać, bo inaczej wie co to Q_OBJECT, ale nie wie gdzie ma znaleźć tablice funkcji wirtualnych dla konstruktorów,
 # destruktorów, funkcji ect. dla naszej klasy MainWindow, w której mamy to coś.
 # A Tu przybliżona definicja Q_OBJECT skopiowana z biblioteki:
 
