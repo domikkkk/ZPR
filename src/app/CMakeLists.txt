@@ -1,5 +1,8 @@
 cmake_minimum_required(VERSION 3.8)
 
-add_library(mainwindow STATIC "mainwindow.cpp")
+# definicja MainWindow_HPP w głównym cmake wraz z objaśnieniem dlaczego tak, a nie inaczej.
+add_library(mainwindow STATIC "mainwindow.cpp" ${MainWindow_HPP})
 
-target_include_directories(mainwindow PUBLIC "${CMAKE_SOURCE_DIR}/include/" ${CMAKE_CURRENT_SOURCE_DIR})
+target_include_directories(mainwindow PUBLIC "${CMAKE_SOURCE_DIR}/include")
+
+target_link_libraries(mainwindow PUBLIC Qt5::Widgets Qt5::Core)

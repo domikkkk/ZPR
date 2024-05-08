@@ -1,35 +1,49 @@
 # Needed
+
 Cmake installed with:
+
 ```bash
 sudo apt update
 sudo apt install cmake
 ```
+
 Qt5 installed with:
+
 ```bash
 sudo apt install qtbase5-dev
 ```
 
-# How to build?
+## How to build?
+
 Just run:
+
 ```bash
 sh build.sh # in <project root>
 ```
+
 or
+
 ```bash
 ./build.sh # if build.sh has permissions to run by user
 ```
-# How to run?
+
+## How to run?
+
 to run program:
+
 ```bash
 ./files_compare
 ```
+
 to run test:
+
 ```bash
 ./tests
 ```
 
-# File structure
-```
+## File structure
+
+```txt
 <project root>
 ├── CMakeLists.txt
 ├── README.md
