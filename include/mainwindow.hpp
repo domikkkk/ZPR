@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QPushButton>
 
 
 struct Point {
@@ -19,10 +20,14 @@ public:
     void gen_text(const QString &text, const int &size, const bool &if_bold = false);
 
 private:
+    QPushButton *add_file1;
+    QPushButton *add_file2;
+    int counter = 0;
 
 signals:
 
 public slots:
+    void onButtonClicked(); 
 
 };
 
