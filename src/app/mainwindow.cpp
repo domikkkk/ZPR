@@ -72,17 +72,21 @@ void MainWindow::onButton2Clicked() {
 
 void MainWindow::add_File(QPushButton *button, const Point &p) {
    QString filePath = QFileDialog::getOpenFileName(this, tr("Wybierz plik"), QDir::currentPath(), tr("Wszystkie pliki (*.*)"));
-   if (!filePath.isEmpty()) {
-      QLabel *fileLabel = new QLabel(filePath, this);
-      layout->addWidget(fileLabel, p.x, p.y);
-      layout->removeWidget(button);
-      delete button;
+   QFile file(filePath);
+   QString fileContent;
+   if (file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+      fileContent = QString::fromUtf8(file.readAll());
+      file.close();
    }
+   QLabel *fileLabel = new QLabel(fileContent, this);
+   layout->addWidget(fileLabel, p.x, p.y);
+   layout->removeWidget(button);
+   delete button;
 }
 
 
 void MainWindow::resizeEvent(QResizeEvent *event) {
-   QWidget::resizeEvent(event);
+   // QWidget::resizeEvent(event);
    // QList<QWidget *> widgets = this->findChildren<QWidget *>();
    // Można dalej nadpisać
 }
