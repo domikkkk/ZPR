@@ -3,6 +3,8 @@
 
 #include <QMainWindow>
 #include <QPushButton>
+#include <QGridLayout>
+#include <QLabel>
 
 
 struct Point {
@@ -15,19 +17,24 @@ struct Point {
 class MainWindow : public QMainWindow {
     Q_OBJECT
 public:
-    MainWindow(QWidget *parent = nullptr);
+    explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
-    void gen_text(const QString &text, const int &size, const bool &if_bold = false);
+    QLabel *gen_text(const QString &text, const int &size, const bool &if_bold = false);
+    void add_File(QPushButton *button, const Point &p);
 
 private:
     QPushButton *add_file1;
     QPushButton *add_file2;
-    int counter = 0;
+    QGridLayout *layout;
+
+protected:
+    void resizeEvent(QResizeEvent *event) override;
 
 signals:
 
 public slots:
-    void onButtonClicked(); 
+    void onButton1Clicked();
+    void onButton2Clicked(); 
 
 };
 
