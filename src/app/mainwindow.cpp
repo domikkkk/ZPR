@@ -1,5 +1,4 @@
 #include <mainwindow.hpp>
-#include <QWidget>
 #include <QFileDialog>
 
 
