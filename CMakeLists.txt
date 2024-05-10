@@ -3,7 +3,7 @@ include(FetchContent)
 
 project("files_compare")
 
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_FLAGS "-Wall -Wextra")
 SET(CMAKE_AUTOMOC ON)
 SET(CMAKE_AUTOUIC ON)
