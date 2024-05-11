@@ -12,8 +12,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
 
    this->layout = new QGridLayout;
 
-   this->add_button(new Button("Add file", 1, 1, this), &MainWindow::onButtonClicked);
-   this->add_button(new Button("Add file", 1, 3, this), &MainWindow::onButtonClicked);
+   this->add_button(new Button("Add file", 1, 1, this), &MainWindow::addFile);
+   this->add_button(new Button("Add file", 1, 3, this), &MainWindow::addFile);
    this->add_button(new Button("Run", 3, 2, this), &MainWindow::run);
 
    this->layout->setVerticalSpacing(20);
@@ -65,18 +65,8 @@ void MainWindow::remove_null_button() {
 }
 
 
-void MainWindow::onButtonClicked() {
+void MainWindow::addFile() {
    Button *clickedButton = qobject_cast<Button *>(sender());
-   this->add_File(clickedButton);
-}
-
-
-void MainWindow::run() {
-
-}
-
-
-void MainWindow::add_File(Button *button) {
    QString filePath = QFileDialog::getOpenFileName(this, tr("Wybierz plik"), QDir::currentPath(), tr("Wszystkie pliki (*.*)"));
    // QFile file(filePath);
    // QString fileContent;
@@ -85,7 +75,7 @@ void MainWindow::add_File(Button *button) {
    //    file.close();
    // TODO reading file to -> class File
    // }
-   QLayoutItem *item = this->layout->itemAtPosition(button->row + 1, button->column - 1);
+   QLayoutItem *item = this->layout->itemAtPosition(clickedButton->row + 1, clickedButton->column - 1);
    if (item) {
       QWidget *widget = item->widget(); // Pobranie widgetu z elementu układu
       TWidget *twidget = qobject_cast<TWidget*>(widget); // Rzutowanie widgetu na QLabel
@@ -97,8 +87,13 @@ void MainWindow::add_File(Button *button) {
       // QLabel *fileLabel = this->gen_text(filePath, 11);
       TWidget *twidget = new TWidget(filePath, this);
       twidget->setMaximumWidth(2 * this->width() / this->layout->columnCount());
-      this->layout->addWidget(twidget, button->row + 1, button->column - 1, 2, 2);
+      this->layout->addWidget(twidget, clickedButton->row + 1, clickedButton->column - 1, 2, 2);
    }
+}
+
+
+void MainWindow::run() {
+
 }
 
 

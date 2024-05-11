@@ -14,7 +14,6 @@ public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
     QLabel *gen_text(const QString &text, const int &size, const bool &if_bold = false);
-    void add_File(Button *button);
     void add_button(Button *button, void (MainWindow::*funtion)());
     void remove_null_button();
 
@@ -28,7 +27,7 @@ protected:
 signals:
 
 public slots:
-    void onButtonClicked();
+    void addFile();
     void run();
 
 };
