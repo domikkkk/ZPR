@@ -50,6 +50,8 @@ to run test:
 ├── build.sh
 ├── include
 │   ├── CompareFiles
+│   ├── TWidget.hpp
+│   ├── button.hpp
 │   ├── compare_files
 │   │   ├── block.hpp
 │   │   ├── file.hpp
@@ -60,6 +62,8 @@ to run test:
 ├── src
 │   ├── app
 │   │   ├── CMakeLists.txt
+│   │   ├── TWidget.cpp
+│   │   ├── button.cpp
 │   │   └── mainwindow.cpp
 │   ├── compare_files
 │   │   ├── CMakeLists.txt
