@@ -5,4 +5,4 @@ add_library(mainwindow STATIC "mainwindow.cpp" ${MainWindow_HPP} "button.cpp" ${
 
 target_include_directories(mainwindow PUBLIC "${CMAKE_SOURCE_DIR}/include")
 
-target_link_libraries(mainwindow PUBLIC Qt5::Widgets Qt5::Core)
+target_link_libraries(mainwindow PUBLIC Qt5::Widgets Qt5::Core Qt5::Gui)

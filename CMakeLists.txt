@@ -54,7 +54,7 @@ set(TWidget_HPP "${CMAKE_SOURCE_DIR}/include/TWidget.hpp")
 add_subdirectory("src/compare_files")
 add_subdirectory("src/app")
 
-target_link_libraries(${PROJECT_NAME} PUBLIC Qt5::Core Qt5::Widgets CompareFiles mainwindow)
+target_link_libraries(${PROJECT_NAME} PUBLIC Qt5::Core Qt5::Widgets Qt5::Gui CompareFiles mainwindow)
 
 
 FetchContent_Declare(

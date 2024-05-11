@@ -29,6 +29,7 @@ signals:
 
 public slots:
     void onButtonClicked();
+    void run();
 
 };
 
