@@ -48,12 +48,13 @@ target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_SOURCE_DIR}/include)
 #     QT_ANNOTATE_CLASS(qt_qobject, "")
 set(MainWindow_HPP "${CMAKE_SOURCE_DIR}/include/mainwindow.hpp")  # tu jest właśnie danie wskazania na nasz plik hpp
 set(Button_HPP "${CMAKE_SOURCE_DIR}/include/button.hpp")
+set(TWidget_HPP "${CMAKE_SOURCE_DIR}/include/TWidget.hpp")
 
 # adding subdirectory like in src/compare_files/{DIR_NAME}
 add_subdirectory("src/compare_files")
 add_subdirectory("src/app")
 
-target_link_libraries(${PROJECT_NAME} PUBLIC Qt5::Core Qt5::Widgets mainwindow CompareFiles)
+target_link_libraries(${PROJECT_NAME} PUBLIC Qt5::Core Qt5::Widgets CompareFiles mainwindow)
 
 
 FetchContent_Declare(
