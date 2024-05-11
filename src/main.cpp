@@ -1,5 +1,4 @@
 #include <mainwindow.hpp>
-#include <CompareFiles>
 #include <QApplication>
 
 
