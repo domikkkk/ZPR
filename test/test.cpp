@@ -28,6 +28,7 @@ TEST(KMPTest, ExtendedTest) {
     }
 }
 
+
 TEST(FileTest, ReadFile) {
     File file = File(fs::path("./test/test_file.txt"));
     std::string expected = "This is a file for testing file operations";
@@ -36,6 +37,15 @@ TEST(FileTest, ReadFile) {
 }
 
 
+TEST(FileTest, Split) {
+    File file = File(fs::path("./test/test_file.txt"));
+    file.read();
+    std::vector<Block> blocks = file.split(" ");
+    Block first = Block("This", 0, 4);
+    Block second = Block("is", 5, 7);
+    ASSERT_EQ(first.getText(), blocks[0].getText());
+    ASSERT_EQ(second.getText(), blocks[1].getText());
+}
 int main(int argc, char **argv) {
     ::testing::InitGoogleTest(&argc, argv);
     return RUN_ALL_TESTS();

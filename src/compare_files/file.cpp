@@ -14,3 +14,17 @@ std::string File::read() {
     }
     return text;
 }
+
+std::vector<Block> File::split(const std::string delimiter) const {
+    std::vector<Block> blocks;
+    std::size_t pos = 0;
+    std::size_t found;
+
+    while ((found = text.find(delimiter, pos)) != std::string::npos) {
+        blocks.push_back(Block(text.substr(pos, found - pos), pos, found));
+        pos = found + delimiter.size();
+    }
+
+    blocks.push_back(Block(text.substr(pos), pos, text.size()));
+    return blocks;
+}

@@ -13,6 +13,7 @@ public:
     File(fs::path path) : path(path) {};
     std::string read();
     std::string write(std::string text);
+    std::vector<Block> split(const std::string delimiter) const;
 protected:
     fs::path path;
     std::string text;  // all text
