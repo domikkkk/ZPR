@@ -28,6 +28,13 @@ TEST(KMPTest, ExtendedTest) {
     }
 }
 
+TEST(FileTest, ReadFile) {
+    File file = File(fs::path("./test/test_file.txt"));
+    std::string expected = "This is a file for testing file operations";
+    std::string result = file.read();
+    ASSERT_EQ(expected, result);
+}
+
 
 int main(int argc, char **argv) {
     ::testing::InitGoogleTest(&argc, argv);

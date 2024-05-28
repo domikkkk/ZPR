@@ -11,11 +11,11 @@ namespace fs = std::filesystem;
 class File {
 public:
     File(fs::path path) : path(path) {};
-    std::string readRange(int start, int end) const;
+    std::string read();
     std::string write(std::string text);
 protected:
     fs::path path;
-    std::string texts;  // all text
+    std::string text;  // all text
     std::vector<Block> blocks;  // blocks of texts
 };
 
