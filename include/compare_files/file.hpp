@@ -12,11 +12,12 @@ class File {
 public:
     File() = default;
     File(fs::path path) : path(path) {};
-    std::string readRange(int start, int end) const;
+    std::string read();
     std::string write(std::string text);
+    std::vector<Block> split(const std::string delimiter) const;
 protected:
     fs::path path;
-    std::string texts;  // all text
+    std::string text;  // all text
     std::vector<Block> blocks;  // blocks of texts
 };
 
