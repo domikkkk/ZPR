@@ -7,8 +7,7 @@
 class Button : public QPushButton {
     Q_OBJECT
 public:
-    explicit Button(const QString &text, const int &row, const int &column, QWidget *parent = nullptr)
-        : QPushButton(text, parent), row(row), column(column) {};
+    Button(const QString &text, const int &row, const int &column, QWidget *parent = nullptr);
     int row;
     int column;
 };

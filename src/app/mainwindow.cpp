@@ -68,28 +68,17 @@ void MainWindow::remove_null_button() {
 void MainWindow::addFile() {
    Button *clickedButton = qobject_cast<Button *>(sender());
    QString filePath = QFileDialog::getOpenFileName(this, tr("Wybierz plik"), QDir::currentPath(), tr("Wszystkie pliki (*.*)"));
-   // QFile file(filePath);
-   // QString fileContent;
-   // if (file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-   //    fileContent = QString::fromUtf8(file.readAll());
-   //    file.close();
-   // }
 
-   // TODO reading file to -> class File
    QLayoutItem *item = this->layout->itemAtPosition(clickedButton->row + 1, clickedButton->column - 1);
    if (item) {
       QWidget *widget = item->widget(); // Pobranie widgetu z elementu układu
-      QLabel *label = qobject_cast<QLabel*>(widget); // Rzutowanie widgetu na QLabel
-      if (label) {
-            label->setText(filePath);
-            label->update();
-      }
    } else {
-      QLabel *fileLabel = this->gen_text(filePath, 11);
-      fileLabel->setAlignment(Qt::AlignLeft);
-      // TWidget *twidget = new TWidget(filePath, this);
-      fileLabel->setMaximumWidth(2 * this->width() / this->layout->columnCount());
-      this->layout->addWidget(fileLabel, clickedButton->row + 1, clickedButton->column - 1, 2, 2);
+      TWidget *textwidget = new TWidget(File(filePath.toStdString()), this);
+      // QLabel *fileLabel = this->gen_text(filePath, 11);
+      // fileLabel->setAlignment(Qt::AlignLeft);
+      // // TWidget *twidget = new TWidget(filePath, this);
+      // fileLabel->setMaximumWidth(2 * this->width() / this->layout->columnCount());
+      this->layout->addWidget(textwidget, clickedButton->row + 1, clickedButton->column - 1, 2, 2);
    }
    // zmienić label na coś innego jak kliknie run
 }

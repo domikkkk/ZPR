@@ -10,6 +10,7 @@ namespace fs = std::filesystem;
 
 class File {
 public:
+    File() = default;
     File(fs::path path) : path(path) {};
     std::string readRange(int start, int end) const;
     std::string write(std::string text);

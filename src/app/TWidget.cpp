@@ -2,6 +2,17 @@
 #include <QPainter>
 
 
+TWidget::TWidget(QWidget *parent) : QWidget(parent) {
+    this->file = File("");
+    this->text = "";
+}
+
+
+TWidget::TWidget(const File &file, QWidget *parent) : QWidget(parent), file(file) {
+    this->text = "";
+}
+
+
 void TWidget::set_text(QString text) {
     this->text = text;
 }

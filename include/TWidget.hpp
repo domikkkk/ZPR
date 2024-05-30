@@ -2,13 +2,14 @@
 #define TWIDGET_HPP
 
 #include <QWidget>
+#include <compare_files/file.hpp>
 
 
 class TWidget : public QWidget {
     Q_OBJECT
 public:
-    TWidget(QWidget *parent = nullptr) : QWidget(parent) {};
-    TWidget(QString text, QWidget *parent = nullptr) : QWidget(parent), text(text) {};
+    explicit TWidget(QWidget *parent = nullptr);
+    TWidget(const File &file, QWidget *parent = nullptr);
     void set_text(QString text);
 
 protected:
@@ -16,6 +17,7 @@ protected:
 
 private:
     QString text;
+    File file;
 };
 
 
