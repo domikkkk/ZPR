@@ -35,7 +35,7 @@ to run program:
 ./files_compare
 ```
 
-to run test:
+to run tests:
 
 ```bash
 ./tests

@@ -32,19 +32,17 @@ TEST(KMPTest, ExtendedTest) {
 TEST(FileTest, ReadFile) {
     File file = File(fs::path("./test/test_file.txt"));
     std::string expected = "This is a file for testing file operations";
-    std::string result = file.read();
-    ASSERT_EQ(expected, result);
+    ASSERT_EQ(expected, file.getText());
 }
 
 
 TEST(FileTest, Split) {
     File file = File(fs::path("./test/test_file.txt"));
-    file.read();
-    std::vector<Block> blocks = file.split(" ");
+    file.split(" ");
     Block first = Block("This", 0, 4);
     Block second = Block("is", 5, 7);
-    ASSERT_EQ(first.getText(), blocks[0].getText());
-    ASSERT_EQ(second.getText(), blocks[1].getText());
+    ASSERT_EQ(first.getText(), file[0].getText());
+    ASSERT_EQ(second.getText(), file[1].getText());
 }
 
 
@@ -56,6 +54,8 @@ TEST(NWTest, computeMatchValue) {
     auto v2 = alg.computeMatchValue(s1, s1);
     ASSERT_LT(v1, v2);
 }
+
+
 int main(int argc, char **argv) {
     ::testing::InitGoogleTest(&argc, argv);
     return RUN_ALL_TESTS();

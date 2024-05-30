@@ -3,7 +3,6 @@
 
 
 TWidget::TWidget(QWidget *parent) : QWidget(parent) {
-    this->file = File("");
     this->text = "";
 }
 
@@ -16,6 +15,7 @@ TWidget::TWidget(const File &file, QWidget *parent) : QWidget(parent), file(file
 void TWidget::set_text(QString text) {
     this->text = text;
 }
+
 
 void TWidget::paintEvent(QPaintEvent *event) {
     QPainter painter(this); // Utwórz obiekt QPainter do rysowania

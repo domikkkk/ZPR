@@ -1,9 +1,19 @@
 #include <compare_files/file.hpp>
 
 
-std::string File::read() {
-    std::ifstream fileStream(path);
-    if (fs::exists(path)) {
+File::File(fs::path path): path(path) {
+    this->read();
+}
+
+
+Block &File::operator[](const size_t &i) {
+    return this->blocks[i];
+}
+
+
+void File::read() {
+    std::ifstream fileStream(this->path);
+    if (fs::exists(this->path)) {
         if (fileStream.is_open()) {
             text.assign((std::istreambuf_iterator<char>(fileStream)),
                         (std::istreambuf_iterator<char>()));
@@ -12,19 +22,22 @@ std::string File::read() {
     } else {
         std::cerr << "Error: Unable to open file." << std::endl;
     }
-    return text;
 }
 
-std::vector<Block> File::split(const std::string delimiter) const {
-    std::vector<Block> blocks;
+
+const std::string &File::getText() {
+    return this->text;
+}
+
+
+void File::split(const std::string delimiter) {
     std::size_t pos = 0;
     std::size_t found;
 
     while ((found = text.find(delimiter, pos)) != std::string::npos) {
-        blocks.push_back(Block(text.substr(pos, found - pos), pos, found));
+        this->blocks.push_back(Block(text.substr(pos, found - pos), pos, found));
         pos = found + delimiter.size();
     }
-
-    blocks.push_back(Block(text.substr(pos), pos, text.size()));
-    return blocks;
+    
+    this->blocks.push_back(Block(text.substr(pos), pos, text.size()));
 }

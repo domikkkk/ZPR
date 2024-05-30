@@ -37,6 +37,7 @@ std::pair<std::vector<std::string>, std::vector<std::string>> NeedlemanWunsch::r
     return std::make_pair(aligneds1, aligneds2);
 }
 
+
 int NeedlemanWunsch::computeMatchValue(const std::vector<std::string>& s1, const std::vector<std::string>& s2) {
     int m = s1.size();
     int n = s2.size();

@@ -1,6 +1,8 @@
 #ifndef TWIDGET_HPP
 #define TWIDGET_HPP
 
+#pragma once
+
 #include <QWidget>
 #include <compare_files/file.hpp>
 

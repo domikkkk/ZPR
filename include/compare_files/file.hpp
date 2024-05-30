@@ -11,14 +11,17 @@ namespace fs = std::filesystem;
 class File {
 public:
     File() = default;
-    File(fs::path path) : path(path) {};
-    std::string read();
+    explicit File(fs::path path);
+    void read();
+    const std::string &getText();
     std::string write(std::string text);
-    std::vector<Block> split(const std::string delimiter) const;
+    void split(const std::string delimiter);
+    Block &operator[](const size_t &i);
 protected:
     fs::path path;
     std::string text;  // all text
     std::vector<Block> blocks;  // blocks of texts
 };
+
 
 #endif
