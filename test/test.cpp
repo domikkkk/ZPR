@@ -46,6 +46,16 @@ TEST(FileTest, Split) {
     ASSERT_EQ(first.getText(), blocks[0].getText());
     ASSERT_EQ(second.getText(), blocks[1].getText());
 }
+
+
+TEST(NWTest, computeMatchValue) {
+    const std::vector<std::string> s1 = {"The", "quick", "brown", "fox"};
+    const std::vector<std::string> s2 = {"The", "quick", "fox", "brown"};
+    NeedlemanWunsch alg = NeedlemanWunsch();
+    auto v1 = alg.computeMatchValue(s1, s2);
+    auto v2 = alg.computeMatchValue(s1, s1);
+    ASSERT_LT(v1, v2);
+}
 int main(int argc, char **argv) {
     ::testing::InitGoogleTest(&argc, argv);
     return RUN_ALL_TESTS();
