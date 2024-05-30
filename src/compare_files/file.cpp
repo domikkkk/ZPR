@@ -1,7 +1,7 @@
 #include <compare_files/file.hpp>
 
 
-File::File(fs::path path): path(path) {
+File::File(const fs::path &path): path(path) {
     this->read();
 }
 
@@ -27,6 +27,11 @@ void File::read() {
 
 const std::string &File::getText() {
     return this->text;
+}
+
+
+std::string File::get_filename() {
+    return this->path.string();
 }
 
 

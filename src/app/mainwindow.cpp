@@ -5,7 +5,7 @@
 
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
-   QLabel *welcome = this->gen_text("Welcome!", 24, true);  // Dodanie głównego napisu
+   QLabel *welcome = gen_text("Welcome!", 24, true, this);  // Dodanie głównego napisu
    welcome->setAlignment(Qt::AlignHCenter);
    this->setWindowTitle("Files compare");
    this->resize(1200, 800);
@@ -40,18 +40,6 @@ MainWindow::~MainWindow() {
 }
 
 
-QLabel *MainWindow::gen_text(const QString &text, const int &size, const bool &if_bold) {
-   QLabel *Label = new QLabel(text, this);
-
-   QFont font = Label->font();
-   font.setPointSize(size);
-   font.setBold(if_bold);
-   Label->setFont(font);
-   
-   return Label;
-}
-
-
 void MainWindow::add_button(Button *button, void (MainWindow::*funtion)()) {
    this->connect(button, &QPushButton::clicked, this, funtion);
    this->layout->addWidget(button, button->row, button->column, 1, 1);
@@ -71,13 +59,12 @@ void MainWindow::addFile() {
 
    QLayoutItem *item = this->layout->itemAtPosition(clickedButton->row + 1, clickedButton->column - 1);
    if (item) {
-      QWidget *widget = item->widget(); // Pobranie widgetu z elementu układu
+      TWidget *twidget = static_cast<TWidget*>(item->widget()); // Pobranie widgetu z elementu układu
+      twidget->set_text(filePath);
+      twidget->update();
    } else {
       TWidget *textwidget = new TWidget(File(filePath.toStdString()), this);
-      // QLabel *fileLabel = this->gen_text(filePath, 11);
-      // fileLabel->setAlignment(Qt::AlignLeft);
-      // // TWidget *twidget = new TWidget(filePath, this);
-      // fileLabel->setMaximumWidth(2 * this->width() / this->layout->columnCount());
+      textwidget->setMaximumWidth(2 * this->width() / this->layout->columnCount());
       this->layout->addWidget(textwidget, clickedButton->row + 1, clickedButton->column - 1, 2, 2);
    }
    // zmienić label na coś innego jak kliknie run

@@ -4,6 +4,7 @@
 #pragma once
 
 #include <QWidget>
+#include <QLabel>
 #include <compare_files/file.hpp>
 
 
@@ -22,5 +23,8 @@ private:
     File file;
 };
 
+
+QLabel *gen_text(const QString &text, const int &size, const bool &if_bold = false, QWidget *parent = nullptr);
+QFont gen_font(const int &size, const bool &if_bold);
 
 #endif
