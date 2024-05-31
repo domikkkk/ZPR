@@ -59,7 +59,6 @@ to run tests:
 │   │   ├── nw.hpp
 │   │   └── textdiff.hpp
 │   └── mainwindow.hpp
-├── install
 ├── src
 │   ├── app
 │   │   ├── CMakeLists.txt
