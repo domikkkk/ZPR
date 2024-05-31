@@ -3,3 +3,4 @@
 #include "compare_files/file.hpp"
 #include "compare_files/textdiff.hpp"
 #include "compare_files/nw.hpp"
+#include "compare_files/change.hpp"
