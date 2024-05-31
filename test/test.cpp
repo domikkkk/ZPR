@@ -48,13 +48,52 @@ TEST(FileTest, Split) {
 
 TEST(NWTest, computeMatchValue) {
     const std::vector<std::string> s1 = {"The", "quick", "brown", "fox"};
-    const std::vector<std::string> s2 = {"The", "quick", "fox", "brown"};
+    const std::vector<std::string> s2 = {"The", "quick", "red", "fox"};
     NeedlemanWunsch alg = NeedlemanWunsch();
     auto v1 = alg.computeMatchValue(s1, s2);
+    // std::cout << alg.getAlignmentScore() << std::endl;
+    // const std::vector<std::string>& aligneds1 = alg.getAlignments().first;
+    // const std::vector<std::string>& aligneds2 = alg.getAlignments().second;
+
+    // // Print the alignments separately
+    // std::cout << "Alignment 1:" << std::endl;
+    // for (const std::string& s : aligneds1) {
+    //     std::cout << s << std::endl;
+    // }
+
+    // std::cout << std::endl;
+
+    // std::cout << "Alignment 2:" << std::endl;
+    // for (const std::string& s : aligneds2) {
+    //     std::cout << s << std::endl;
+    // }
     auto v2 = alg.computeMatchValue(s1, s1);
     ASSERT_LT(v1, v2);
 }
 
+
+TEST(ComparatorTest, detectChanges) {
+    std::string text1 = "The quick brown fox";
+    std::string text2 = "The quick red fox";
+    Comparator comparator = Comparator();
+    std::vector<Change> changes = comparator.detectChanges(text1, text2);
+    ASSERT_EQ(changes[0].getType(), ChangeType::Deletion);
+    ASSERT_EQ(changes[0].getText(), "brown");
+    ASSERT_EQ(changes[1].getType(), ChangeType::Addition);
+    ASSERT_EQ(changes[1].getText(), "red");
+}
+
+
+TEST(ComparatorTest, detectChangesSpaces) {
+    std::string text1 = "The    quick brown fox";
+    std::string text2 = "The quick brown fox";
+    Comparator comparator = Comparator();
+    std::vector<Change> changes = comparator.detectChanges(text1, text2);
+    ASSERT_EQ(changes[0].getType(), ChangeType::Deletion);
+    ASSERT_EQ(changes[0].getText(), "    ");
+    ASSERT_EQ(changes[1].getType(), ChangeType::Addition);
+    ASSERT_EQ(changes[1].getText(), " ");
+}
 
 int main(int argc, char **argv) {
     ::testing::InitGoogleTest(&argc, argv);

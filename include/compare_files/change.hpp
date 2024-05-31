@@ -2,6 +2,9 @@
 #define CHANGE_HPP
 #pragma once
 
+#include <string>
+
+
 enum class ChangeType {
     Addition,
     Deletion
@@ -10,7 +13,7 @@ enum class ChangeType {
 class Change {
 private:
     ChangeType type;
-    int position;
+    size_t position;
     std::string text;
 public:
     Change(ChangeType type, int position, std::string text) :
