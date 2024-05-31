@@ -5,23 +5,14 @@
 TWidget::TWidget(QWidget *parent)
     : QWidget(parent),
       titleLabel(new QLabel(this)),
-      button(new QPushButton("Preview", this)),
       textEdit(new QTextEdit(this)),
       scrollArea(new QScrollArea(this)) {
     
     this->titleLabel->setAlignment(Qt::AlignCenter);
-    this->button->setMaximumWidth(100);
-    this->connect(this->button, &QPushButton::clicked, this, &TWidget::preview);
     this->scrollArea->setWidget(this->textEdit);
     this->scrollArea->setWidgetResizable(true);
     this->textEdit->setWordWrapMode(QTextOption::NoWrap);
     this->textEdit->hide();
-
-    QVBoxLayout *layout = new QVBoxLayout(this);
-    layout->addWidget(this->titleLabel);
-    layout->addWidget(this->button, 0, Qt::AlignCenter);
-    layout->addWidget(this->scrollArea);
-    this->setLayout(layout);
 }
 
 
@@ -30,6 +21,16 @@ TWidget::TWidget(const File &file, QWidget *parent) : TWidget(parent) {
     this->titleLabel->setText(QString::fromStdString(this->file.get_filename())); 
     this->titleLabel->setFont(gen_font(11, false));
     this->textEdit->setPlainText(QString::fromStdString(this->file.getText()));
+
+    this->button = new QPushButton("Preview", this),
+    this->button->setMaximumWidth(100);
+    this->connect(this->button, &QPushButton::clicked, this, &TWidget::preview);
+
+    QVBoxLayout *layout = new QVBoxLayout(this);
+    layout->addWidget(this->titleLabel);
+    layout->addWidget(this->button, 0, Qt::AlignCenter);
+    layout->addWidget(this->scrollArea);
+    this->setLayout(layout);
 }
 
 
