@@ -1,9 +1,9 @@
 #include <TWidget.hpp>
-#include <QVBoxLayout>
 
 
 TWidget::TWidget(QWidget *parent)
     : QWidget(parent),
+      layout(new QVBoxLayout(this)),
       titleLabel(new QLabel(this)),
       textEdit(new QTextEdit(this)),
       scrollArea(new QScrollArea(this)) {
@@ -26,11 +26,10 @@ TWidget::TWidget(const File &file, QWidget *parent) : TWidget(parent) {
     this->button->setMaximumWidth(100);
     this->connect(this->button, &QPushButton::clicked, this, &TWidget::preview);
 
-    QVBoxLayout *layout = new QVBoxLayout(this);
-    layout->addWidget(this->titleLabel);
-    layout->addWidget(this->button, 0, Qt::AlignCenter);
-    layout->addWidget(this->scrollArea);
-    this->setLayout(layout);
+    this->layout->addWidget(this->titleLabel);
+    this->layout->addWidget(this->button, 0, Qt::AlignCenter);
+    this->layout->addWidget(this->scrollArea);
+    this->setLayout(this->layout);
 }
 
 

@@ -1,5 +1,8 @@
 #include <mainwindow.hpp>
 #include <QFileDialog>
+#include <QProgressDialog>
+#include <QtConcurrent/QtConcurrent>
+#include <QCoreApplication>
 #include <cmath>
 #include <TWidget.hpp>
 
@@ -15,6 +18,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
    this->add_button(new Button("Add file", 1, TWIDGET_WIDTH / 2, this), &MainWindow::addFile);
    this->add_button(new Button("Add file", 1, WIDTH / 2 + int(std::ceil(float(TWIDGET_WIDTH) / 2.f)), this), &MainWindow::addFile);
    this->add_button(new Button("Run", 3, TWIDGET_WIDTH, this), &MainWindow::run);
+   for (auto button: this->buttons) button->setMaximumWidth(100);
 
    this->layout->setVerticalSpacing(20);
    this->layout->addWidget(welcome, 0, TWIDGET_WIDTH);  // w 0 wierszu, w środkowej kolumnie ustawiony napis
@@ -68,7 +72,6 @@ void MainWindow::addFile() {
       textwidget->setMaximumWidth(TWIDGET_WIDTH * this->width() / this->layout->columnCount());
       this->layout->addWidget(textwidget, clickedButton->row + 1, clickedButton->column - 1, 2, TWIDGET_WIDTH);
    }
-   // zmienić label na coś innego jak kliknie run
 }
 
 
@@ -84,5 +87,46 @@ void MainWindow::resizeEvent(QResizeEvent *event) {
 
 
 void MainWindow::run() {
-   // wywołać główną funkcję porównującą pliki
+   const auto &children = this->centralWidget()->children();
+   for (QObject *child : children) {
+      if (TWidget *twidget = qobject_cast<TWidget *>(child)) {
+         twidget->hideText();
+      }
+   }
+
+   QProgressDialog progressDialog("Running...", "Cancel", 0, 100, this);
+   progressDialog.setWindowModality(Qt::WindowModal);
+   progressDialog.setWindowTitle("Progress");
+   connect(&progressDialog, &QProgressDialog::canceled, this, &MainWindow::onProgressDialogCanceled);
+   this->cancel = false;
+   this->progress = 0;
+
+   QFuture<void> future = QtConcurrent::run(this, &MainWindow::longRunningTask);
+
+   while (!future.isFinished()) {
+        progressDialog.setValue(this->progress);
+        QThread::msleep(100);
+   }
+
+   progressDialog.close();
+}
+
+
+void MainWindow::onProgressDialogCanceled() {
+   this->cancel = true;
+}
+
+
+void MainWindow::longRunningTask() {
+    // Symulacja długiej operacji
+   for (int i = 0; i <= 100; ++i) {
+      // Wykonaj operację
+      // Symulacja czasu potrzebnego na wykonanie obliczeń
+      if (this->cancel) {
+         this->progress = 0;
+         return;
+      }
+      QThread::msleep(100);
+      ++this->progress;
+   }
 }

@@ -8,6 +8,7 @@
 #include <QScrollArea>
 #include <QTextEdit>
 #include <QPushButton>
+#include <QVBoxLayout>
 #include <compare_files/file.hpp>
 
 
@@ -23,6 +24,7 @@ protected:
 
 private:
     File file;
+    QVBoxLayout *layout;
     QLabel *titleLabel;
     QPushButton *button;
     QTextEdit *textEdit;

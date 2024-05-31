@@ -19,10 +19,13 @@ public:
     ~MainWindow();
     void add_button(Button *button, void (MainWindow::*funtion)());
     void remove_null_button();
+    void longRunningTask();
 
 private:
     QGridLayout *layout;
     std::vector<Button*> buttons;
+    int progress = 0;  // chyba będzie do usunięcia
+    bool cancel = false;
 
 protected:
     void resizeEvent(QResizeEvent *event) override;
@@ -31,7 +34,7 @@ signals:
 public slots:
     void addFile();
     void run();
-
+    void onProgressDialogCanceled();
 };
 
 #endif
