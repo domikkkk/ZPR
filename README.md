@@ -56,6 +56,7 @@ to run tests:
 │   │   ├── block.hpp
 │   │   ├── file.hpp
 │   │   ├── kmp.hpp
+│   │   ├── nw.hpp
 │   │   └── textdiff.hpp
 │   └── mainwindow.hpp
 ├── install
@@ -70,8 +71,10 @@ to run tests:
 │   │   ├── block.cpp
 │   │   ├── file.cpp
 │   │   ├── kmp.cpp
+│   │   ├── nw.cpp
 │   │   └── textdiff.cpp
 │   └── main.cpp
 └── test
-    └── test.cpp
+    ├── test.cpp
+    └── test_file.txt
 ```

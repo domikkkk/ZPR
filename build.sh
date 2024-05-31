@@ -11,3 +11,5 @@ cmake --build .
 
 mv files_compare ..
 mv tests ..
+
+exit 0
