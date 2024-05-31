@@ -5,6 +5,8 @@
 
 #include <QWidget>
 #include <QLabel>
+#include <QScrollArea>
+#include <QTextEdit>
 #include <compare_files/file.hpp>
 
 
@@ -16,11 +18,14 @@ public:
     void set_text(QString text);
 
 protected:
-    void paintEvent(QPaintEvent *event) override;
+    // void paintEvent(QPaintEvent *event) override;
 
 private:
     QString text;
     File file;
+    QLabel *titleLabel;
+    QTextEdit *textEdit;
+    QScrollArea *scrollArea;
 };
 
 

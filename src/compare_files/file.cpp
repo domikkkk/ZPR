@@ -25,17 +25,17 @@ void File::read() {
 }
 
 
-const std::string &File::getText() {
+std::string File::getText() const {
     return this->text;
 }
 
 
-std::string File::get_filename() {
-    return this->path.string();
+const fs::path &File::get_filename() {
+    return this->path;
 }
 
 
-void File::split(const std::string delimiter) {
+void File::split(const std::string &delimiter) {
     std::size_t pos = 0;
     std::size_t found;
 

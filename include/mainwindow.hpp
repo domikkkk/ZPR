@@ -3,6 +3,9 @@
 
 #pragma once
 
+#define WIDTH 7
+#define TWIDGET_WIDTH WIDTH / 2
+
 #include <QMainWindow>
 #include <button.hpp>
 #include <QGridLayout>

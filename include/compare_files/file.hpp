@@ -13,10 +13,10 @@ public:
     File() = default;
     explicit File(const fs::path &path);
     void read();
-    const std::string &getText();
-    std::string get_filename();
+    std::string getText() const;
+    const fs::path &get_filename();
     std::string write(std::string text);
-    void split(const std::string delimiter);
+    void split(const std::string &delimiter);
     Block &operator[](const size_t &i);
 protected:
     fs::path path;

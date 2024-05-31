@@ -12,15 +12,15 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
 
    this->layout = new QGridLayout;
 
-   this->add_button(new Button("Add file", 1, 1, this), &MainWindow::addFile);
-   this->add_button(new Button("Add file", 1, 3, this), &MainWindow::addFile);
-   this->add_button(new Button("Run", 3, 2, this), &MainWindow::run);
+   this->add_button(new Button("Add file", 1, TWIDGET_WIDTH / 2, this), &MainWindow::addFile);
+   this->add_button(new Button("Add file", 1, WIDTH / 2 + TWIDGET_WIDTH / 2 + 1, this), &MainWindow::addFile);
+   this->add_button(new Button("Run", 3, TWIDGET_WIDTH, this), &MainWindow::run);
 
    this->layout->setVerticalSpacing(20);
-   this->layout->addWidget(welcome, 0, 2);  // w 0 wierszu, w środkowej kolumnie ustawiony napis
+   this->layout->addWidget(welcome, 0, TWIDGET_WIDTH);  // w 0 wierszu, w środkowej kolumnie ustawiony napis
 
    this->layout->setRowStretch(2, 1);  // Zrobienie wolnego wiersza bo dlaczego nie
-   this->layout->setColumnStretch(4, 1);  // Żeby było równo
+   this->layout->setColumnStretch(WIDTH - 1, 1);  // Żeby było równo
    for (int i = 0; i < this->layout->columnCount(); ++i) {
       this->layout->setColumnStretch(i, 1);
    }
@@ -65,7 +65,7 @@ void MainWindow::addFile() {
    } else {
       TWidget *textwidget = new TWidget(File(filePath.toStdString()), this);
       textwidget->setMaximumWidth(2 * this->width() / this->layout->columnCount());
-      this->layout->addWidget(textwidget, clickedButton->row + 1, clickedButton->column - 1, 2, 2);
+      this->layout->addWidget(textwidget, clickedButton->row + 1, clickedButton->column - 1, 2, TWIDGET_WIDTH);
    }
    // zmienić label na coś innego jak kliknie run
 }
@@ -82,14 +82,14 @@ void MainWindow::resizeEvent(QResizeEvent *event) {
    if (item) {
       QWidget *widget = item->widget();
       if (widget) {
-         widget->setMaximumWidth(2 * this->width() / this->layout->columnCount());
+         widget->setMaximumWidth(TWIDGET_WIDTH * this->width() / this->layout->columnCount());
       }
    }
    item = this->layout->itemAtPosition(1, 3);
    if (item) {
       QWidget *widget = item->widget();
       if (widget) {
-         widget->setMaximumWidth(2 * this->width() / this->layout->columnCount());
+         widget->setMaximumWidth(TWIDGET_WIDTH * this->width() / this->layout->columnCount());
       }
    }
 
