@@ -1,6 +1,5 @@
 #include <mainwindow.hpp>
 #include <QFileDialog>
-#include <algorithm>
 #include <cmath>
 #include <TWidget.hpp>
 

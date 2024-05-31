@@ -1,5 +1,4 @@
 #include <TWidget.hpp>
-#include <QPainter>
 #include <QVBoxLayout>
 
 
@@ -11,6 +10,8 @@ TWidget::TWidget(QWidget *parent)
     
     this->titleLabel->setAlignment(Qt::AlignCenter);
     this->scrollArea->setWidget(this->textEdit);
+    this->scrollArea->setWidgetResizable(true);
+    this->textEdit->setWordWrapMode(QTextOption::NoWrap);
 
     QVBoxLayout *layout = new QVBoxLayout(this);
     layout->addWidget(titleLabel);

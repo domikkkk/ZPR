@@ -4,7 +4,7 @@
 #pragma once
 
 #define WIDTH 7  // lepiej nieparzyste dać
-#define TWIDGET_WIDTH WIDTH / 2
+#define TWIDGET_WIDTH WIDTH / 2  // połowa szerokości
 
 #include <QMainWindow>
 #include <button.hpp>
