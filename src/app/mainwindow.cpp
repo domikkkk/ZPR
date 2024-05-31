@@ -56,10 +56,12 @@ void MainWindow::remove_null_button() {
 void MainWindow::addFile() {
    Button *clickedButton = qobject_cast<Button *>(sender());
    QString filePath = QFileDialog::getOpenFileName(this, tr("Choose file"), QDir::currentPath(), tr("All files (*.*)"));
+   clickedButton->setText("Change file");
 
    QLayoutItem *item = this->layout->itemAtPosition(clickedButton->row + 1, clickedButton->column - 1);
    if (item) {
-      TWidget *twidget = static_cast<TWidget*>(item->widget()); // Pobranie widgetu z elementu układu
+      TWidget *twidget = static_cast<TWidget*>(item->widget());
+      twidget->change_file(filePath);
       twidget->update();
    } else {
       TWidget *textwidget = new TWidget(File(filePath.toStdString()), this);
