@@ -15,13 +15,10 @@ class TWidget : public QWidget {
 public:
     explicit TWidget(QWidget *parent = nullptr);
     TWidget(const File &file, QWidget *parent = nullptr);
-    void set_text(QString text);
 
 protected:
-    // void paintEvent(QPaintEvent *event) override;
 
 private:
-    QString text;
     File file;
     QLabel *titleLabel;
     QTextEdit *textEdit;

@@ -3,7 +3,7 @@
 
 #pragma once
 
-#define WIDTH 7
+#define WIDTH 7  // lepiej nieparzyste dać
 #define TWIDGET_WIDTH WIDTH / 2
 
 #include <QMainWindow>
@@ -25,7 +25,6 @@ private:
     std::vector<Button*> buttons;
 
 protected:
-    void resizeEvent(QResizeEvent *event) override;
 
 signals:
 
