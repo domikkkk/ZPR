@@ -25,7 +25,7 @@ private:
     std::vector<Button*> buttons;
 
 protected:
-
+    void resizeEvent(QResizeEvent *event) override;
 signals:
 
 public slots:

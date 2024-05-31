@@ -56,7 +56,6 @@ void MainWindow::remove_null_button() {
 void MainWindow::addFile() {
    Button *clickedButton = qobject_cast<Button *>(sender());
    QString filePath = QFileDialog::getOpenFileName(this, tr("Choose file"), QDir::currentPath(), tr("All files (*.*)"));
-   clickedButton->setText("Change file");
 
    QLayoutItem *item = this->layout->itemAtPosition(clickedButton->row + 1, clickedButton->column - 1);
    if (item) {
@@ -64,11 +63,23 @@ void MainWindow::addFile() {
       twidget->change_file(filePath);
       twidget->update();
    } else {
+      clickedButton->setText("Change file");
       TWidget *textwidget = new TWidget(File(filePath.toStdString()), this);
       textwidget->setMaximumWidth(TWIDGET_WIDTH * this->width() / this->layout->columnCount());
       this->layout->addWidget(textwidget, clickedButton->row + 1, clickedButton->column - 1, 2, TWIDGET_WIDTH);
    }
    // zmienić label na coś innego jak kliknie run
+}
+
+
+void MainWindow::resizeEvent(QResizeEvent *event) {
+   QMainWindow::resizeEvent(event);
+   const auto &children = this->centralWidget()->children();
+   for (QObject *child : children) {
+      if (TWidget *twidget = qobject_cast<TWidget *>(child)) {
+         twidget->setMaximumWidth(TWIDGET_WIDTH * this->width() / this->layout->columnCount());
+      }
+   }
 }
 
 
