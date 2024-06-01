@@ -46,7 +46,7 @@ MainWindow::~MainWindow() {
 
 void MainWindow::add_button(Button *button, void (MainWindow::*funtion)()) {
    this->connect(button, &QPushButton::clicked, this, funtion);
-   this->layout->addWidget(button, button->row, button->column, 1, 1);
+   this->layout->addWidget(button, button->row, button->column, 1, 1, Qt::AlignCenter);
    this->buttons.push_back(button);
 }
 
