@@ -7,12 +7,13 @@
 
 class TextDiff {
 public:
-    TextDiff(Block original, Block old, std::vector<Change> changes) : original(original), old(old),  changes(changes) {}
+    TextDiff(Block original, Block modified, std::vector<Change> changes) : original(original), modified(modified),  changes(changes) {}
     Block getOriginal() const;
-    Block getOld() const;
+    Block getModified() const;
+    std::vector<Change> getChanges() const;
 protected:
     Block original;
-    Block old;
+    Block modified;
     std::vector<Change> changes;
 };
 
