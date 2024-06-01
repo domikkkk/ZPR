@@ -22,6 +22,7 @@ public:
             alignments = std::make_pair(a, b);
         };
     int getAlignmentScore() const;
+    std::pair<std::vector<std::string>, std::vector<std::string>> getAlignments() const;
 private:
     Matrix createMatrix(int rows, int cols);
     void deleteMatrix(int** matrix, int rows);

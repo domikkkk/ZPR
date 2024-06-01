@@ -6,6 +6,10 @@ int NeedlemanWunsch::getAlignmentScore() const {
 }
 
 
+std::pair<std::vector<std::string>, std::vector<std::string>> NeedlemanWunsch::getAlignments() const {
+    return alignments;
+}
+
 Matrix NeedlemanWunsch::createMatrix(int rows, int cols) {
     Matrix matrix(new std::unique_ptr<int[]>[rows]);
     for (int i = 0; i < rows; ++i) {
@@ -26,14 +30,16 @@ std::pair<std::vector<std::string>, std::vector<std::string>> NeedlemanWunsch::r
             --j;
         } else if (i > 0 && dp[i][j] == dp[i - 1][j] + gapPenalty) {
             aligneds1.push_back(s1[i - 1]);
-            aligneds2.push_back("");
+            aligneds2.push_back("<<gap>>");
             --i;
         } else {
-            aligneds1.push_back("");
+            aligneds1.push_back("<<gap>>");
             aligneds2.push_back(s2[j - 1]);
             --j;
         }
     }
+    std::reverse(aligneds1.begin(), aligneds1.end());
+    std::reverse(aligneds2.begin(), aligneds2.end());
     return std::make_pair(aligneds1, aligneds2);
 }
 
