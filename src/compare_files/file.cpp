@@ -22,13 +22,13 @@ void File::read() {
     } else {
         std::cerr << "Error: Unable to open file." << std::endl;
     }
-    this->readed = true;
+    this->m_read = true;
 }
 
 
 void File::change_filename(const fs::path &new_path) {
     this->path = new_path;
-    this->readed = false;
+    this->m_read = false;
 }
 
 
@@ -37,7 +37,7 @@ std::string File::getText() const {
 }
 
 
-const fs::path &File::get_filename() {
+const fs::path &File::get_filename() const {
     return this->path;
 }
 
@@ -50,11 +50,11 @@ void File::split(const std::string &delimiter) {
         this->blocks.push_back(Block(text.substr(pos, found - pos), pos, found));
         pos = found + delimiter.size();
     }
-    
+
     this->blocks.push_back(Block(text.substr(pos), pos, text.size()));
 }
 
 
 bool File::was_read() const {
-    return this->readed;
+    return this->m_read;
 }
