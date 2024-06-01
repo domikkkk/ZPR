@@ -2,7 +2,7 @@
 
 
 File::File(const fs::path &path): path(path) {
-    this->read();
+    // this->read();  // może jednak nie czytajmy
 }
 
 
@@ -22,6 +22,13 @@ void File::read() {
     } else {
         std::cerr << "Error: Unable to open file." << std::endl;
     }
+    this->readed = true;
+}
+
+
+void File::change_filename(const fs::path &new_path) {
+    this->path = new_path;
+    this->readed = false;
 }
 
 
@@ -45,4 +52,9 @@ void File::split(const std::string &delimiter) {
     }
     
     this->blocks.push_back(Block(text.substr(pos), pos, text.size()));
+}
+
+
+bool File::was_read() const {
+    return this->readed;
 }

@@ -17,8 +17,11 @@ public:
     const fs::path &get_filename();
     std::string write(std::string text);
     void split(const std::string &delimiter);
+    void change_filename(const fs::path &new_path);
     Block &operator[](const size_t &i);
+    bool was_read() const;
 protected:
+    bool readed = false;
     fs::path path;
     std::string text;  // all text
     std::vector<Block> blocks;  // blocks of texts

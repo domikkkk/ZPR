@@ -31,6 +31,7 @@ TEST(KMPTest, ExtendedTest) {
 
 TEST(FileTest, ReadFile) {
     File file = File(fs::path("./test/test_file.txt"));
+    file.read();
     std::string expected = "This is a file for testing file operations";
     ASSERT_EQ(expected, file.getText());
 }
@@ -38,6 +39,7 @@ TEST(FileTest, ReadFile) {
 
 TEST(FileTest, Split) {
     File file = File(fs::path("./test/test_file.txt"));
+    file.read();
     file.split(" ");
     Block first = Block("This", 0, 4);
     Block second = Block("is", 5, 7);

@@ -7,6 +7,8 @@
 #include <QLabel>
 #include <QScrollArea>
 #include <QTextEdit>
+#include <QPushButton>
+#include <QVBoxLayout>
 #include <compare_files/file.hpp>
 
 
@@ -15,17 +17,21 @@ class TWidget : public QWidget {
 public:
     explicit TWidget(QWidget *parent = nullptr);
     TWidget(const File &file, QWidget *parent = nullptr);
-    void set_text(QString text);
+    void change_file(const QString &filename);
+    void hideText();
 
 protected:
-    // void paintEvent(QPaintEvent *event) override;
 
 private:
-    QString text;
     File file;
+    QVBoxLayout *layout;
     QLabel *titleLabel;
+    QPushButton *button;
     QTextEdit *textEdit;
     QScrollArea *scrollArea;
+
+public slots:
+    void preview();
 };
 
 

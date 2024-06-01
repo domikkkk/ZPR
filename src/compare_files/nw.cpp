@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <compare_files/nw.hpp>
 
 
