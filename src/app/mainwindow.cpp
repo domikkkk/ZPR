@@ -7,6 +7,7 @@
 #include <cmath>
 #include <TWidget.hpp>
 #include <legend.hpp>
+#include <colors.hpp>
 
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
@@ -128,7 +129,7 @@ void MainWindow::longRunningTask() {
       QThread::msleep(100);
       ++this->progress;
    }
-   twidgets[0]->highlightTextRange(10, 30, QColor(Qt::red));
+   twidgets[0]->highlightTextRange(10, 30, QColor(Colors::RED));
    return;
 }
 

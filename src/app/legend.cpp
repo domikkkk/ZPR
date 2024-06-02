@@ -1,5 +1,6 @@
 #include <legend.hpp>
 #include <QLabel>
+#include <colors.hpp>
 
 
 LegendDialog::LegendDialog(QWidget *parent) : QDialog(parent) {
@@ -12,7 +13,7 @@ LegendDialog::LegendDialog(QWidget *parent) : QDialog(parent) {
 
         QLabel *colorLabel = new QLabel(this);
         colorLabel->setFixedSize(20, 20);
-        colorLabel->setStyleSheet("background-color: " + this->items[i].color);
+        colorLabel->setStyleSheet("background-color: " + this->items[i].color.name());
 
         QLabel *descriptionLabel = new QLabel(this->items[i].description, this);
 
@@ -24,8 +25,9 @@ LegendDialog::LegendDialog(QWidget *parent) : QDialog(parent) {
 
 void LegendDialog::initLegend() {
     this->items = {
-        {"red", "Error"},
-        {"green", "Success"},
-        {"blue", "Information"},
+        {Colors::RED, "Zmiana1"},
+        {Colors::GREEN, "Zmiana2"},
+        {Colors::BLUE, "Zmiana3"},
+        {Colors::YELLOW, "Zmiana4"},
     }; // do zmian pewnie
 }

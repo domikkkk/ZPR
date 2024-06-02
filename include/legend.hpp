@@ -7,7 +7,7 @@
 
 
 struct LegendItem {
-    QString color;
+    QColor color;
     QString description;
 };
 
