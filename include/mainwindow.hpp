@@ -7,9 +7,10 @@
 #define TWIDGET_WIDTH WIDTH / 2  // połowa szerokości
 
 #include <QMainWindow>
-#include <button.hpp>
 #include <QGridLayout>
 #include <vector>
+#include <TWidget.hpp>
+#include <button.hpp>
 
 
 class MainWindow : public QMainWindow {
@@ -18,12 +19,12 @@ public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
     void add_button(Button *button, void (MainWindow::*funtion)());
-    void remove_null_button();
     void longRunningTask();
 
 private:
     QGridLayout *layout;
     std::vector<Button*> buttons;
+    std::pair<TWidget*, TWidget*> twidgets = {0, 0};
     int progress = 0;  // chyba będzie do usunięcia
     bool cancel = false;
 

@@ -4,7 +4,6 @@
 #include <QtConcurrent/QtConcurrent>
 #include <QCoreApplication>
 #include <cmath>
-#include <TWidget.hpp>
 
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
@@ -51,47 +50,49 @@ void MainWindow::add_button(Button *button, void (MainWindow::*funtion)()) {
 }
 
 
-void MainWindow::remove_null_button() {
-   this->buttons.erase(std::remove_if(this->buttons.begin(), this->buttons.end(),
-    [](Button* button) { return button == nullptr; }), this->buttons.end());
-}
-
-
 void MainWindow::addFile() {
    Button *clickedButton = qobject_cast<Button *>(sender());
    QString filePath = QFileDialog::getOpenFileName(this, tr("Choose file"), QDir::currentPath(), tr("All files (*.*)"));
 
-   QLayoutItem *item = this->layout->itemAtPosition(clickedButton->row + 1, clickedButton->column - 1);
+   int column = clickedButton->column - 1;
+   QLayoutItem *item = this->layout->itemAtPosition(clickedButton->row + 1, column);
    if (item) {
-      TWidget *twidget = static_cast<TWidget*>(item->widget());
+      TWidget *twidget = qobject_cast<TWidget*>(item->widget());
       twidget->change_file(filePath);
       twidget->update();
    } else {
       clickedButton->setText("Change file");
       TWidget *textwidget = new TWidget(File(filePath.toStdString()), this);
       textwidget->setMaximumWidth(TWIDGET_WIDTH * this->width() / this->layout->columnCount());
-      this->layout->addWidget(textwidget, clickedButton->row + 1, clickedButton->column - 1, 2, TWIDGET_WIDTH);
+      if (column < TWIDGET_WIDTH) {
+         this->twidgets.first = textwidget;
+      } else {
+         this->twidgets.second = textwidget;
+      }
+      this->layout->addWidget(textwidget, clickedButton->row + 1, column, 2, TWIDGET_WIDTH);
    }
 }
 
 
 void MainWindow::resizeEvent(QResizeEvent *event) {
    QMainWindow::resizeEvent(event);
-   const auto &children = this->centralWidget()->children();
-   for (QObject *child : children) {
-      if (TWidget *twidget = qobject_cast<TWidget *>(child)) {
-         twidget->setMaximumWidth(TWIDGET_WIDTH * this->width() / this->layout->columnCount());
-      }
+   if (this->twidgets.first != 0) {
+      this->twidgets.first->setMaximumWidth(TWIDGET_WIDTH * this->width() / this->layout->columnCount());
+   }
+   if (this->twidgets.second != 0) {
+      this->twidgets.second->setMaximumWidth(TWIDGET_WIDTH * this->width() / this->layout->columnCount());
    }
 }
 
 
 void MainWindow::run() {
-   const auto &children = this->centralWidget()->children();
-   for (QObject *child : children) {
-      if (TWidget *twidget = qobject_cast<TWidget *>(child)) {
-         twidget->hideText();
-      }
+   if (this->twidgets.first != 0) {
+      this->twidgets.first->readText();
+      this->twidgets.first->hideText();
+   }
+   if (this->twidgets.second != 0) {
+      this->twidgets.second->readText();
+      this->twidgets.second->hideText();
    }
 
    QProgressDialog progressDialog("Running...", "Cancel", 0, 100, this);
@@ -102,7 +103,6 @@ void MainWindow::run() {
    this->progress = 0;
 
    QFuture<void> future = QtConcurrent::run(this, &MainWindow::longRunningTask);
-
    while (!future.isFinished()) {
         progressDialog.setValue(this->progress);
         QThread::msleep(100);
@@ -119,14 +119,15 @@ void MainWindow::onProgressDialogCanceled() {
 
 void MainWindow::longRunningTask() {
     // Symulacja długiej operacji
-   for (int i = 0; i <= 100; ++i) {
+   for (int i = 0; i < 100; ++i) {
       // Wykonaj operację
       // Symulacja czasu potrzebnego na wykonanie obliczeń
       if (this->cancel) {
-         this->progress = 0;
          return;
       }
       QThread::msleep(100);
       ++this->progress;
    }
+   this->twidgets.first->highlightTextRange(10, 50, QColor(Qt::red));
+   return;
 }

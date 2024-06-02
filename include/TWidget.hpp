@@ -19,6 +19,8 @@ public:
     TWidget(const File &file, QWidget *parent = nullptr);
     void change_file(const QString &filename);
     void hideText();
+    void readText();
+    void highlightTextRange(const int &from, const int &to, const QColor &color);
 
 protected:
 
