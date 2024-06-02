@@ -5,6 +5,10 @@
 
 #define WIDTH 7  // lepiej nieparzyste dać
 #define TWIDGET_WIDTH WIDTH / 2  // połowa szerokości
+#define TWIDGET_HEIGTH 3
+#define ADDFILEBUTTON 1
+#define RUNBUTTON 3
+#define LEGEND 4
 
 #include <QMainWindow>
 #include <QGridLayout>
@@ -34,6 +38,7 @@ public slots:
     void addFile();
     void run();
     void onProgressDialogCanceled();
+    void displayLegend();
 };
 
 #endif

@@ -6,6 +6,7 @@
 #include <QMessageBox>
 #include <cmath>
 #include <TWidget.hpp>
+#include <legend.hpp>
 
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
@@ -16,17 +17,17 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
 
    this->layout = new QGridLayout;
 
-   this->add_button(new Button("Add file", 1, TWIDGET_WIDTH / 2, this), &MainWindow::addFile);
-   this->add_button(new Button("Add file", 1, WIDTH / 2 + int(std::ceil(float(TWIDGET_WIDTH) / 2.f)), this), &MainWindow::addFile);
-   this->add_button(new Button("Run", 3, TWIDGET_WIDTH, this), &MainWindow::run);
+   this->add_button(new Button("Add file", ADDFILEBUTTON, TWIDGET_WIDTH / 2, this), &MainWindow::addFile);
+   this->add_button(new Button("Add file", ADDFILEBUTTON, WIDTH / 2 + int(std::ceil(float(TWIDGET_WIDTH) / 2.f)), this), &MainWindow::addFile);
+   this->add_button(new Button("Run", RUNBUTTON, TWIDGET_WIDTH, this), &MainWindow::run);
+   this->add_button(new Button("Legend", LEGEND, TWIDGET_WIDTH, this), &MainWindow::displayLegend);
    for (auto button: this->buttons) button->setMaximumWidth(100);
 
    this->layout->setVerticalSpacing(20);
    this->layout->addWidget(welcome, 0, TWIDGET_WIDTH);  // w 0 wierszu, w środkowej kolumnie ustawiony napis
 
-   this->layout->setRowStretch(2, 1);  // Zrobienie wolnego wiersza bo dlaczego nie
-   this->layout->setColumnStretch(WIDTH - 1, 1);  // Żeby było równo
-   for (int i = 0; i < this->layout->columnCount(); ++i) {
+   this->layout->setRowStretch(2, 1);  // Rozciągnięcie
+   for (int i = 0; i < WIDTH; ++i) {
       this->layout->setColumnStretch(i, 1);
    }
    QWidget *widget = new QWidget(this);
@@ -67,7 +68,7 @@ void MainWindow::addFile() {
       clickedButton->setText("Change file");
       TWidget *textwidget = new TWidget(File(filePath.toStdString()), this);
       textwidget->setMaximumWidth(TWIDGET_WIDTH * this->width() / this->layout->columnCount());
-      this->layout->addWidget(textwidget, clickedButton->row + 1, column, 2, TWIDGET_WIDTH);
+      this->layout->addWidget(textwidget, clickedButton->row + 1, column, TWIDGET_HEIGTH, TWIDGET_WIDTH);
    }
 }
 
@@ -129,4 +130,10 @@ void MainWindow::longRunningTask() {
    }
    twidgets[0]->highlightTextRange(10, 30, QColor(Qt::red));
    return;
+}
+
+
+void MainWindow::displayLegend() {
+   LegendDialog legendDialog(this);
+   legendDialog.exec();
 }

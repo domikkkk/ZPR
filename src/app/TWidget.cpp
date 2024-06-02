@@ -93,7 +93,7 @@ QLabel *gen_text(const QString &text, const int &size, const bool &if_bold, QWid
 }
 
 
-QFont gen_font(const int &size, const bool &if_bold) {
+const QFont gen_font(const int &size, const bool &if_bold) {
    QFont font;
    font.setPointSize(size);
    font.setBold(if_bold);
