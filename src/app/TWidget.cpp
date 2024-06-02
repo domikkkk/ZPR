@@ -80,6 +80,11 @@ void TWidget::highlightTextRange(const int &from, const int &to, const QColor &c
 }
 
 
+const File &TWidget::getFile() const {
+    return this->file;
+}
+
+
 QLabel *gen_text(const QString &text, const int &size, const bool &if_bold, QWidget *parent) {
     QLabel *Label = new QLabel(text, parent);
     Label->setFont(gen_font(size, if_bold));

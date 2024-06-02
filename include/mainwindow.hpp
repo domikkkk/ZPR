@@ -9,7 +9,6 @@
 #include <QMainWindow>
 #include <QGridLayout>
 #include <vector>
-#include <TWidget.hpp>
 #include <button.hpp>
 
 
@@ -24,7 +23,6 @@ public:
 private:
     QGridLayout *layout;
     std::vector<Button*> buttons;
-    std::pair<TWidget*, TWidget*> twidgets = {0, 0};
     int progress = 0;  // chyba będzie do usunięcia
     bool cancel = false;
 

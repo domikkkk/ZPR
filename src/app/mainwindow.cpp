@@ -3,7 +3,9 @@
 #include <QProgressDialog>
 #include <QtConcurrent/QtConcurrent>
 #include <QCoreApplication>
+#include <QMessageBox>
 #include <cmath>
+#include <TWidget.hpp>
 
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
@@ -61,14 +63,10 @@ void MainWindow::addFile() {
       twidget->change_file(filePath);
       twidget->update();
    } else {
+      if (filePath.size() == 0) return;
       clickedButton->setText("Change file");
       TWidget *textwidget = new TWidget(File(filePath.toStdString()), this);
       textwidget->setMaximumWidth(TWIDGET_WIDTH * this->width() / this->layout->columnCount());
-      if (column < TWIDGET_WIDTH) {
-         this->twidgets.first = textwidget;
-      } else {
-         this->twidgets.second = textwidget;
-      }
       this->layout->addWidget(textwidget, clickedButton->row + 1, column, 2, TWIDGET_WIDTH);
    }
 }
@@ -76,23 +74,22 @@ void MainWindow::addFile() {
 
 void MainWindow::resizeEvent(QResizeEvent *event) {
    QMainWindow::resizeEvent(event);
-   if (this->twidgets.first != 0) {
-      this->twidgets.first->setMaximumWidth(TWIDGET_WIDTH * this->width() / this->layout->columnCount());
-   }
-   if (this->twidgets.second != 0) {
-      this->twidgets.second->setMaximumWidth(TWIDGET_WIDTH * this->width() / this->layout->columnCount());
+   QList<TWidget *> twidgets = this->centralWidget()->findChildren<TWidget *>();
+   for (TWidget *t : twidgets) {
+      t->setMaximumWidth(TWIDGET_WIDTH * this->width() / this->layout->columnCount());
    }
 }
 
 
 void MainWindow::run() {
-   if (this->twidgets.first != 0) {
-      this->twidgets.first->readText();
-      this->twidgets.first->hideText();
+   auto twidgets = this->centralWidget()->findChildren<TWidget *>();
+   if (twidgets.size() < 2) {
+      QMessageBox::warning(this, "Warning", "You must add two files before running.");
+      return;
    }
-   if (this->twidgets.second != 0) {
-      this->twidgets.second->readText();
-      this->twidgets.second->hideText();
+   for (TWidget *t : twidgets) {
+      t->readText();
+      t->hideText();
    }
 
    QProgressDialog progressDialog("Running...", "Cancel", 0, 100, this);
@@ -118,7 +115,9 @@ void MainWindow::onProgressDialogCanceled() {
 
 
 void MainWindow::longRunningTask() {
-    // Symulacja długiej operacji
+   QList<TWidget *> twidgets = this->centralWidget()->findChildren<TWidget *>();
+   const File &file1 = twidgets[0]->getFile();
+   const File &file2 = twidgets[1]->getFile();
    for (int i = 0; i < 100; ++i) {
       // Wykonaj operację
       // Symulacja czasu potrzebnego na wykonanie obliczeń
@@ -128,6 +127,6 @@ void MainWindow::longRunningTask() {
       QThread::msleep(100);
       ++this->progress;
    }
-   this->twidgets.first->highlightTextRange(10, 50, QColor(Qt::red));
+   twidgets[0]->highlightTextRange(10, 30, QColor(Qt::red));
    return;
 }
