@@ -21,6 +21,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
    this->add_button(new Button("Add file", ADDFILEBUTTON, TWIDGET_WIDTH / 2, this), &MainWindow::addFile);
    this->add_button(new Button("Add file", ADDFILEBUTTON, WIDTH / 2 + int(std::ceil(float(TWIDGET_WIDTH) / 2.f)), this), &MainWindow::addFile);
    this->add_button(new Button("Run", RUNBUTTON, TWIDGET_WIDTH, this), &MainWindow::run);
+   this->add_button(new Button("Merge", MERGEBUTTON, TWIDGET_WIDTH, this), &MainWindow::merge);
    this->add_button(new Button("Legend", LEGEND, TWIDGET_WIDTH, this), &MainWindow::displayLegend);
    for (auto button: this->buttons) button->setMaximumWidth(100);
 
@@ -60,9 +61,10 @@ void MainWindow::addFile() {
 
    int column = clickedButton->column - 1;
    QLayoutItem *item = this->layout->itemAtPosition(clickedButton->row + 1, column);
+   this->can_merge = false;
    if (item) {
       TWidget *twidget = qobject_cast<TWidget*>(item->widget());
-      twidget->change_file(filePath);
+      if (filePath.size() != 0) twidget->change_file(filePath);
       twidget->update();
    } else {
       if (filePath.size() == 0) return;
@@ -130,6 +132,7 @@ void MainWindow::longRunningTask() {
       ++this->progress;
    }
    twidgets[0]->highlightTextRange(10, 30, QColor(Colors::RED));
+   this->can_merge = true;
    return;
 }
 
@@ -137,4 +140,21 @@ void MainWindow::longRunningTask() {
 void MainWindow::displayLegend() {
    LegendDialog legendDialog(this);
    legendDialog.exec();
+}
+
+
+void MainWindow::merge() {
+   if (!this->can_merge) {
+      QMessageBox::warning(this, "Warning", "You must run before merging.");
+      return;
+   }
+   // merging
+   std::string mergedText = "Zmergowane jakiś tekst";
+   QMainWindow *mergedWindow = new QMainWindow(this);
+   mergedWindow->setWindowTitle("Merged Text");
+
+   TWidget *mergedWidget = new TWidget(QString::fromStdString(mergedText), mergedWindow);
+   mergedWindow->setCentralWidget(mergedWidget);
+   mergedWindow->resize(800, 600);
+   mergedWindow->show();
 }

@@ -17,6 +17,7 @@ class TWidget : public QWidget {
 public:
     explicit TWidget(QWidget *parent = nullptr);
     TWidget(const File &file, QWidget *parent = nullptr);
+    TWidget(const QString &text, QWidget *parent = nullptr);
     void change_file(const QString &filename);
     void hideText();
     void readText();
