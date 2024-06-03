@@ -63,7 +63,7 @@ void File::split(const std::string &delimiter) {
 void File::splitByParagraphs() {
     std::size_t pos = 0;
     std::size_t found;
-    const std::string delimiter = "\r\n\r\n";
+    const std::string delimiter = "\n\n";
 
     while ((found = text.find(delimiter, pos)) != std::string::npos) {
         this->blocks.push_back(Block(text.substr(pos, found - pos), pos, found));
@@ -80,4 +80,9 @@ void File::splitByParagraphs() {
 
 bool File::was_read() const {
     return this->m_read;
+}
+
+
+int File::get_size() const {
+    return this->blocks.size();
 }

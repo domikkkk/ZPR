@@ -23,6 +23,7 @@ public:
     void splitByParagraphs();
     void change_filename(const fs::path &new_path);
     bool was_read() const;
+    int get_size() const;
 
     Block &operator[](const size_t &i);
 protected:
