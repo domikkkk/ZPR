@@ -48,29 +48,35 @@ TEST(FileTest, Split) {
 }
 
 
+TEST(FileTest, SplitByParagraphs) {
+    File file = File(fs::path("./test/par.txt"));
+    file.read();
+    file.splitByParagraphs();
+    Block first = Block("First", 0, 4);
+    Block second = Block("Second", 6, 12);
+    Block third = Block("Third", 14, 19);
+    ASSERT_EQ(first.getText(), file[0].getText());
+    ASSERT_EQ(second.getText(), file[1].getText());
+    ASSERT_EQ(third.getText(), file[2].getText());
+}
+
+
 TEST(NWTest, computeMatchValue) {
     const std::vector<std::string> s1 = {"The", "quick", "brown", "fox"};
     const std::vector<std::string> s2 = {"The", "quick", "red", "fox"};
     NeedlemanWunsch alg = NeedlemanWunsch();
     auto v1 = alg.computeMatchValue(s1, s2);
-    // std::cout << alg.getAlignmentScore() << std::endl;
-    // const std::vector<std::string>& aligneds1 = alg.getAlignments().first;
-    // const std::vector<std::string>& aligneds2 = alg.getAlignments().second;
-
-    // // Print the alignments separately
-    // std::cout << "Alignment 1:" << std::endl;
-    // for (const std::string& s : aligneds1) {
-    //     std::cout << s << std::endl;
-    // }
-
-    // std::cout << std::endl;
-
-    // std::cout << "Alignment 2:" << std::endl;
-    // for (const std::string& s : aligneds2) {
-    //     std::cout << s << std::endl;
-    // }
     auto v2 = alg.computeMatchValue(s1, s1);
     ASSERT_LT(v1, v2);
+}
+
+
+TEST(NWTest, computeMatchValueOneAddition) {
+    const std::vector<std::string> s1 = {"First", "b"};
+    const std::vector<std::string> s2 = {"b", "First"};
+    NeedlemanWunsch alg = NeedlemanWunsch();
+    auto v1 = alg.computeMatchValue(s1, s2);
+    std::cout << v1 << std::endl;
 }
 
 
@@ -97,6 +103,41 @@ TEST(ComparatorTest, detectChangesSpaces) {
     ASSERT_EQ(changes[1].getText(), " ");
 }
 
+TEST(ComparatorTest, splitIntoTokens) {
+    std::string text = "The    quick brown fox";
+    Comparator comparator = Comparator();
+    auto tokens = comparator.splitIntoTokens(text);
+    ASSERT_EQ(tokens[0], "The");
+    ASSERT_EQ(tokens[1], "    ");
+    ASSERT_EQ(tokens[2], "quick");
+    ASSERT_EQ(tokens[3], " ");
+    ASSERT_EQ(tokens[4], "brown");
+    ASSERT_EQ(tokens[5], " ");
+    ASSERT_EQ(tokens[6], "fox");
+}
+
+
+TEST(AppTest, compareBasicTest) {
+    File f1 = File(fs::path("./test/paragraphs.txt"));
+    File f2 = File(fs::path("./test/paragraphs_v2.txt"));
+    App app = App(f1, f2);
+    auto changes = app.compare();
+    for (auto change : changes) {
+        std::cout << "Original:[" + change.getOriginal().getText() + "]" << std::endl;
+        std::cout << "Modified:[" + change.getModified().getText() + "]" << std::endl;
+        for (auto c : change.getChanges()) {
+            switch(c.getType()) {
+                case ChangeType::Addition:
+                    std::cout << "Addition: ";
+                    break;
+                case ChangeType::Deletion:
+                    std::cout << "Deletion: ";
+                    break;
+            }
+            std::cout << "[" + c.getText() + "]" << std::endl;
+        }
+    }
+}
 int main(int argc, char **argv) {
     ::testing::InitGoogleTest(&argc, argv);
     return RUN_ALL_TESTS();
