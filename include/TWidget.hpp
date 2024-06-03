@@ -19,6 +19,9 @@ public:
     TWidget(const File &file, QWidget *parent = nullptr);
     void change_file(const QString &filename);
     void hideText();
+    void readText();
+    void highlightTextRange(const int &from, const int &to, const QColor &color);
+    const File &getFile() const;
 
 protected:
 
@@ -36,6 +39,6 @@ public slots:
 
 
 QLabel *gen_text(const QString &text, const int &size, const bool &if_bold = false, QWidget *parent = nullptr);
-QFont gen_font(const int &size, const bool &if_bold);
+const QFont gen_font(const int &size, const bool &if_bold);
 
 #endif

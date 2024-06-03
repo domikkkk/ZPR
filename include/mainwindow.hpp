@@ -5,11 +5,15 @@
 
 #define WIDTH 7  // lepiej nieparzyste dać
 #define TWIDGET_WIDTH WIDTH / 2  // połowa szerokości
+#define TWIDGET_HEIGTH 3
+#define ADDFILEBUTTON 1
+#define RUNBUTTON 3
+#define LEGEND 4
 
 #include <QMainWindow>
-#include <button.hpp>
 #include <QGridLayout>
 #include <vector>
+#include <button.hpp>
 
 
 class MainWindow : public QMainWindow {
@@ -18,7 +22,6 @@ public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
     void add_button(Button *button, void (MainWindow::*funtion)());
-    void remove_null_button();
     void longRunningTask();
 
 private:
@@ -35,6 +38,7 @@ public slots:
     void addFile();
     void run();
     void onProgressDialogCanceled();
+    void displayLegend();
 };
 
 #endif

@@ -49,6 +49,7 @@ target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_SOURCE_DIR}/include)
 set(MainWindow_HPP "${CMAKE_SOURCE_DIR}/include/mainwindow.hpp")  # tu jest właśnie danie wskazania na nasz plik hpp
 set(Button_HPP "${CMAKE_SOURCE_DIR}/include/button.hpp")
 set(TWidget_HPP "${CMAKE_SOURCE_DIR}/include/TWidget.hpp")
+set(Legend_HPP "${CMAKE_SOURCE_DIR}/include/legend.hpp")
 
 # adding subdirectory like in src/compare_files/{DIR_NAME}
 add_subdirectory("src/compare_files")

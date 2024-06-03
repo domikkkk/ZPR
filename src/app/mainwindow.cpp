@@ -3,8 +3,11 @@
 #include <QProgressDialog>
 #include <QtConcurrent/QtConcurrent>
 #include <QCoreApplication>
+#include <QMessageBox>
 #include <cmath>
 #include <TWidget.hpp>
+#include <legend.hpp>
+#include <colors.hpp>
 
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
@@ -15,17 +18,17 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
 
    this->layout = new QGridLayout;
 
-   this->add_button(new Button("Add file", 1, TWIDGET_WIDTH / 2, this), &MainWindow::addFile);
-   this->add_button(new Button("Add file", 1, WIDTH / 2 + int(std::ceil(float(TWIDGET_WIDTH) / 2.f)), this), &MainWindow::addFile);
-   this->add_button(new Button("Run", 3, TWIDGET_WIDTH, this), &MainWindow::run);
+   this->add_button(new Button("Add file", ADDFILEBUTTON, TWIDGET_WIDTH / 2, this), &MainWindow::addFile);
+   this->add_button(new Button("Add file", ADDFILEBUTTON, WIDTH / 2 + int(std::ceil(float(TWIDGET_WIDTH) / 2.f)), this), &MainWindow::addFile);
+   this->add_button(new Button("Run", RUNBUTTON, TWIDGET_WIDTH, this), &MainWindow::run);
+   this->add_button(new Button("Legend", LEGEND, TWIDGET_WIDTH, this), &MainWindow::displayLegend);
    for (auto button: this->buttons) button->setMaximumWidth(100);
 
    this->layout->setVerticalSpacing(20);
    this->layout->addWidget(welcome, 0, TWIDGET_WIDTH);  // w 0 wierszu, w środkowej kolumnie ustawiony napis
 
-   this->layout->setRowStretch(2, 1);  // Zrobienie wolnego wiersza bo dlaczego nie
-   this->layout->setColumnStretch(WIDTH - 1, 1);  // Żeby było równo
-   for (int i = 0; i < this->layout->columnCount(); ++i) {
+   this->layout->setRowStretch(2, 1);  // Rozciągnięcie
+   for (int i = 0; i < WIDTH; ++i) {
       this->layout->setColumnStretch(i, 1);
    }
    QWidget *widget = new QWidget(this);
@@ -51,47 +54,44 @@ void MainWindow::add_button(Button *button, void (MainWindow::*funtion)()) {
 }
 
 
-void MainWindow::remove_null_button() {
-   this->buttons.erase(std::remove_if(this->buttons.begin(), this->buttons.end(),
-    [](Button* button) { return button == nullptr; }), this->buttons.end());
-}
-
-
 void MainWindow::addFile() {
    Button *clickedButton = qobject_cast<Button *>(sender());
    QString filePath = QFileDialog::getOpenFileName(this, tr("Choose file"), QDir::currentPath(), tr("All files (*.*)"));
 
-   QLayoutItem *item = this->layout->itemAtPosition(clickedButton->row + 1, clickedButton->column - 1);
+   int column = clickedButton->column - 1;
+   QLayoutItem *item = this->layout->itemAtPosition(clickedButton->row + 1, column);
    if (item) {
-      TWidget *twidget = static_cast<TWidget*>(item->widget());
+      TWidget *twidget = qobject_cast<TWidget*>(item->widget());
       twidget->change_file(filePath);
       twidget->update();
    } else {
+      if (filePath.size() == 0) return;
       clickedButton->setText("Change file");
       TWidget *textwidget = new TWidget(File(filePath.toStdString()), this);
       textwidget->setMaximumWidth(TWIDGET_WIDTH * this->width() / this->layout->columnCount());
-      this->layout->addWidget(textwidget, clickedButton->row + 1, clickedButton->column - 1, 2, TWIDGET_WIDTH);
+      this->layout->addWidget(textwidget, clickedButton->row + 1, column, TWIDGET_HEIGTH, TWIDGET_WIDTH);
    }
 }
 
 
 void MainWindow::resizeEvent(QResizeEvent *event) {
    QMainWindow::resizeEvent(event);
-   const auto &children = this->centralWidget()->children();
-   for (QObject *child : children) {
-      if (TWidget *twidget = qobject_cast<TWidget *>(child)) {
-         twidget->setMaximumWidth(TWIDGET_WIDTH * this->width() / this->layout->columnCount());
-      }
+   QList<TWidget *> twidgets = this->centralWidget()->findChildren<TWidget *>();
+   for (TWidget *t : twidgets) {
+      t->setMaximumWidth(TWIDGET_WIDTH * this->width() / this->layout->columnCount());
    }
 }
 
 
 void MainWindow::run() {
-   const auto &children = this->centralWidget()->children();
-   for (QObject *child : children) {
-      if (TWidget *twidget = qobject_cast<TWidget *>(child)) {
-         twidget->hideText();
-      }
+   auto twidgets = this->centralWidget()->findChildren<TWidget *>();
+   if (twidgets.size() < 2) {
+      QMessageBox::warning(this, "Warning", "You must add two files before running.");
+      return;
+   }
+   for (TWidget *t : twidgets) {
+      t->readText();
+      t->hideText();
    }
 
    QProgressDialog progressDialog("Running...", "Cancel", 0, 100, this);
@@ -102,7 +102,6 @@ void MainWindow::run() {
    this->progress = 0;
 
    QFuture<void> future = QtConcurrent::run(this, &MainWindow::longRunningTask);
-
    while (!future.isFinished()) {
         progressDialog.setValue(this->progress);
         QThread::msleep(100);
@@ -118,15 +117,24 @@ void MainWindow::onProgressDialogCanceled() {
 
 
 void MainWindow::longRunningTask() {
-    // Symulacja długiej operacji
-   for (int i = 0; i <= 100; ++i) {
+   QList<TWidget *> twidgets = this->centralWidget()->findChildren<TWidget *>();
+   const File &file1 = twidgets[0]->getFile();
+   const File &file2 = twidgets[1]->getFile();
+   for (int i = 0; i < 100; ++i) {
       // Wykonaj operację
       // Symulacja czasu potrzebnego na wykonanie obliczeń
       if (this->cancel) {
-         this->progress = 0;
          return;
       }
       QThread::msleep(100);
       ++this->progress;
    }
+   twidgets[0]->highlightTextRange(10, 30, QColor(Colors::RED));
+   return;
+}
+
+
+void MainWindow::displayLegend() {
+   LegendDialog legendDialog(this);
+   legendDialog.exec();
 }

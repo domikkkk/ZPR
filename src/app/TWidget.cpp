@@ -12,6 +12,7 @@ TWidget::TWidget(QWidget *parent)
     this->scrollArea->setWidget(this->textEdit);
     this->scrollArea->setWidgetResizable(true);
     this->textEdit->setWordWrapMode(QTextOption::NoWrap);
+    this->textEdit->setReadOnly(true);
     this->textEdit->hide();
 }
 
@@ -39,12 +40,18 @@ void TWidget::hideText() {
 }
 
 
+void TWidget::readText() {
+    if (!this->file.was_read()) {
+        this->file.read();
+        this->textEdit->setText(QString::fromStdString(this->file.getText()));
+    }
+    return;
+}
+
+
 void TWidget::preview() {
     if (this->textEdit->isHidden()) {
-        if (!this->file.was_read()) {
-            this->file.read();
-        }
-        this->textEdit->setText(QString::fromStdString(this->file.getText()));
+        this->readText();
         this->textEdit->show();
         this->button->setText("Hide");
     } else {
@@ -62,6 +69,22 @@ void TWidget::change_file(const QString &filename) {
 }
 
 
+void TWidget::highlightTextRange(const int &from, const int &to, const QColor &color) {
+    QTextCursor cursor = this->textEdit->textCursor();
+    cursor.setPosition(from, QTextCursor::MoveAnchor);
+    cursor.setPosition(to, QTextCursor::KeepAnchor);
+
+    QTextCharFormat charFormat;
+    charFormat.setBackground(color);
+    cursor.setCharFormat(charFormat);
+}
+
+
+const File &TWidget::getFile() const {
+    return this->file;
+}
+
+
 QLabel *gen_text(const QString &text, const int &size, const bool &if_bold, QWidget *parent) {
     QLabel *Label = new QLabel(text, parent);
     Label->setFont(gen_font(size, if_bold));
@@ -70,7 +93,7 @@ QLabel *gen_text(const QString &text, const int &size, const bool &if_bold, QWid
 }
 
 
-QFont gen_font(const int &size, const bool &if_bold) {
+const QFont gen_font(const int &size, const bool &if_bold) {
    QFont font;
    font.setPointSize(size);
    font.setBold(if_bold);
