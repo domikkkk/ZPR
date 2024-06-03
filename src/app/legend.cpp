@@ -5,7 +5,8 @@
 
 LegendDialog::LegendDialog(QWidget *parent) : QDialog(parent) {
     this->setWindowTitle("Legend");
-    dialogLayout = new QGridLayout(this);
+    this->resize(200, 100);
+    this->dialogLayout = new QGridLayout(this);
     
     this->initLegend();
 

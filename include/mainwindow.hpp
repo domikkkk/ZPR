@@ -5,10 +5,11 @@
 
 #define WIDTH 7  // lepiej nieparzyste dać
 #define TWIDGET_WIDTH WIDTH / 2  // połowa szerokości
-#define TWIDGET_HEIGTH 3
+#define TWIDGET_HEIGTH 4
 #define ADDFILEBUTTON 1
 #define RUNBUTTON 3
-#define LEGEND 4
+#define MERGEBUTTON 4
+#define LEGEND 5
 
 #include <QMainWindow>
 #include <QGridLayout>
@@ -29,6 +30,7 @@ private:
     std::vector<Button*> buttons;
     int progress = 0;  // chyba będzie do usunięcia
     bool cancel = false;
+    bool can_merge = false;
 
 protected:
     void resizeEvent(QResizeEvent *event) override;
@@ -39,6 +41,7 @@ public slots:
     void run();
     void onProgressDialogCanceled();
     void displayLegend();
+    void merge();
 };
 
 #endif
