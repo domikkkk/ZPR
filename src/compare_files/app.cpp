@@ -77,7 +77,7 @@ std::vector<TextDiff> App::findChanges(std::vector<std::pair<Block, Block>> simi
     std::vector<TextDiff> changes = {};
     Comparator comp = Comparator();
     for (auto [original, modified] : similarBlocks) {
-        auto changesInBlocks = comp.detectChanges(original.getText(), modified.getText());
+        auto changesInBlocks = comp.detectChanges(original.getText(), modified.getText(), original.getStartPos(), modified.getStartPos());
         changes.push_back(TextDiff(original, modified, changesInBlocks));
     }
     return changes;

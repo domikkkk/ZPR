@@ -29,33 +29,37 @@ std::vector<std::string> Comparator::splitIntoTokens(const std::string& text) co
     return tokens;
 }
 
-std::vector<Change> Comparator::detectChanges(const std::string& text1, const std::string& text2) const {
+std::vector<Change> Comparator::detectChanges(const std::string& text1, const std::string& text2, int startPos1, int startPos2) const {
     std::vector<std::string> tokens1 = splitIntoTokens(text1);
     std::vector<std::string> tokens2 = splitIntoTokens(text2);
     std::vector<Change> changes;
 
     size_t i = 0, j = 0;
-    size_t position = 0;
+    size_t position1 = startPos1;
+    size_t position2 = startPos2;
 
     while (i < tokens1.size() || j < tokens2.size()) {
         if (i < tokens1.size() && j < tokens2.size() && tokens1[i] == tokens2[j]) {
             ++i;
             ++j;
-            position += tokens1[i - 1].size();
+            position1 += tokens1[i - 1].size();
+            position2 += tokens2[j - 1].size();
         } else {
             if (i < tokens1.size()) {
-                changes.push_back(Change(ChangeType::Deletion, position, tokens1[i]));
+                changes.push_back(Change(ChangeType::Deletion, position1, tokens1[i]));
+                position1 += tokens1[i].size();
                 ++i;
             }
             if (j < tokens2.size()) {
-                changes.push_back(Change(ChangeType::Addition, position, tokens2[j]));
+                changes.push_back(Change(ChangeType::Addition, position2, tokens2[j]));
+                position2 += tokens2[j].size();
                 ++j;
             }
-            if (i < tokens1.size()) {
-                position += tokens1[i].size();
-            } else if (j < tokens2.size()) {
-                position += tokens2[j].size();
-            }
+            // if (i < tokens1.size()) {
+            //     position1 += tokens1[i].size();
+            // } else if (j < tokens2.size()) {
+            //     position2 += tokens2[j].size();
+            // }
         }
     }
     return changes;

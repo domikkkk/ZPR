@@ -9,7 +9,7 @@
 
 class Comparator {
 public:
-    std::vector<Change> detectChanges(const std::string& text1, const std::string& text2) const;
+    std::vector<Change> detectChanges(const std::string& text1, const std::string& text2, int startPos1, int startPos2) const;
     std::vector<std::string> splitIntoTokens(const std::string& text) const;
 };
 
