@@ -123,12 +123,19 @@ void MainWindow::onProgressDialogCanceled() {
 
 void MainWindow::longRunningTask() {
    QList<TWidget *> twidgets = this->centralWidget()->findChildren<TWidget *>();
-   TWidget *left = twidgets[0]->column < twidgets[1]->column? twidgets[0]: twidgets[1];
-   TWidget *right = twidgets[0]->column > twidgets[1]->column? twidgets[0]: twidgets[1];
+   TWidget *left;
+   TWidget *right;
+   if (twidgets[0]->column < twidgets[1]->column) {
+      left = twidgets[0];
+      right = twidgets[1];
+   } else {
+      left = twidgets[1];
+      right = twidgets[0];
+   }
    File f1 = left->getFile();
    File f2 = right->getFile();
-   app.addFiles(f1, f2);
-   std::vector<TextDiff> changes = app.compare();
+   this->app.addFiles(f1, f2);
+   std::vector<TextDiff> changes = this->app.compare();
 
    for (auto change: changes) {
       for (auto c: change.getChanges()) {
