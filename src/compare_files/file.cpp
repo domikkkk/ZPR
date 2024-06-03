@@ -42,6 +42,11 @@ const fs::path &File::get_filename() const {
 }
 
 
+std::vector<Block> File::getBlocks() const {
+    return blocks;
+}
+
+
 void File::split(const std::string &delimiter) {
     std::size_t pos = 0;
     std::size_t found;
@@ -52,6 +57,24 @@ void File::split(const std::string &delimiter) {
     }
 
     this->blocks.push_back(Block(text.substr(pos), pos, text.size()));
+}
+
+
+void File::splitByParagraphs() {
+    std::size_t pos = 0;
+    std::size_t found;
+    const std::string delimiter = "\r\n\r\n";
+
+    while ((found = text.find(delimiter, pos)) != std::string::npos) {
+        this->blocks.push_back(Block(text.substr(pos, found - pos), pos, found));
+        pos = found + delimiter.size();
+        while (text[pos] == '\r' && text[pos + 1] == '\n') {
+            pos += 2;
+        }
+    }
+    if (pos < text.size()) {
+        this->blocks.push_back(Block(text.substr(pos), pos, text.size()));
+    }
 }
 
 

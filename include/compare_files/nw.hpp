@@ -12,16 +12,16 @@ using Matrix = std::unique_ptr<std::unique_ptr<int[]>[]>;
 class NeedlemanWunsch {
 private:
     const int matchScore, mismatchScore, gapPenalty;
-    int alignmentScore;
+    float alignmentScore;
     std::pair<std::vector<std::string>, std::vector<std::string>> alignments;
 public:
-    int computeMatchValue(const std::vector<std::string>& s1, const std::vector<std::string>& s2);
-    NeedlemanWunsch(int matchScore=1, int mismatchScore=-1, int gapPenalty=-2)
+    float computeMatchValue(const std::vector<std::string>& s1, const std::vector<std::string>& s2);
+    NeedlemanWunsch(int matchScore=1, int mismatchScore=-1, int gapPenalty=-1)
         : matchScore(matchScore), mismatchScore(mismatchScore), gapPenalty(gapPenalty), alignmentScore(0) {
             std::vector<std::string> a, b;
             alignments = std::make_pair(a, b);
         };
-    int getAlignmentScore() const;
+    float getAlignmentScore() const;
     std::pair<std::vector<std::string>, std::vector<std::string>> getAlignments() const;
 private:
     Matrix createMatrix(int rows, int cols);
