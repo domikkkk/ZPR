@@ -15,10 +15,12 @@ public:
 
     std::string getText() const;
     const fs::path &get_filename() const;
+    std::vector<Block> getBlocks() const;
 
     void read();
     std::string write(std::string text);
     void split(const std::string &delimiter);
+    void splitByParagraphs();
     void change_filename(const fs::path &new_path);
     bool was_read() const;
 

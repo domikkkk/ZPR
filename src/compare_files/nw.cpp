@@ -2,7 +2,7 @@
 #include <compare_files/nw.hpp>
 
 
-int NeedlemanWunsch::getAlignmentScore() const {
+float NeedlemanWunsch::getAlignmentScore() const {
     return alignmentScore;
 }
 
@@ -45,7 +45,7 @@ std::pair<std::vector<std::string>, std::vector<std::string>> NeedlemanWunsch::r
 }
 
 
-int NeedlemanWunsch::computeMatchValue(const std::vector<std::string>& s1, const std::vector<std::string>& s2) {
+float NeedlemanWunsch::computeMatchValue(const std::vector<std::string>& s1, const std::vector<std::string>& s2) {
     int m = s1.size();
     int n = s2.size();
     auto dp = createMatrix(m + 1, n + 1);
@@ -66,7 +66,6 @@ int NeedlemanWunsch::computeMatchValue(const std::vector<std::string>& s1, const
         }
     }
     this->alignments = reconstructAlignment(s1, s2, dp);
-    this->alignmentScore = dp[m][n];
-
+    this->alignmentScore = float(dp[m][n]) / float(std::max(s1.size(), s2.size()));
     return alignmentScore;
 }
