@@ -10,7 +10,7 @@
 #include <colors.hpp>
 
 
-MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), mergedWindow(new MergedWindow(this)) {
+MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
    QLabel *welcome = gen_text("Welcome!", 24, true, this);  // Dodanie głównego napisu
    welcome->setAlignment(Qt::AlignHCenter);
    this->setWindowTitle("Files compare");
@@ -45,6 +45,7 @@ MainWindow::~MainWindow() {
       delete child;
    }
    delete this->layout;
+   delete this->mergedWindow;
 }
 
 
@@ -128,11 +129,11 @@ void MainWindow::longRunningTask() {
       if (this->cancel) {
          return;
       }
-      QThread::msleep(100);
       ++this->progress;
    }
    twidgets[0]->highlightTextRange(10, 30, QColor(Colors::RED));
    this->can_merge = true;
+   this->editied = true;
    return;
 }
 
@@ -149,9 +150,12 @@ void MainWindow::merge() {
       return;
    }
    // merging
-   std::string mergedText = "Zmergowane jakiś tekst";
-   TWidget *mergedWidget = new TWidget(QString::fromStdString(mergedText), this);
+   if (this->editied) {
+      std::string mergedText = "Zmergowany jakiś tekst";
+      TWidget *mergedWidget = new TWidget(QString::fromStdString(mergedText), this);
+      this->mergedWindow = new MergedWindow(mergedWidget, this);
+      this->editied = false;
+   }
    
-   this->mergedWindow->addTWidget(mergedWidget);
    this->mergedWindow->show();
 }

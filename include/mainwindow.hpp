@@ -33,6 +33,7 @@ private:
     int progress = 0;  // chyba będzie do usunięcia
     bool cancel = false;
     bool can_merge = false;
+    bool editied = false;
 
 protected:
     void resizeEvent(QResizeEvent *event) override;
