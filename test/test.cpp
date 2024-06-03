@@ -84,7 +84,7 @@ TEST(ComparatorTest, detectChanges) {
     std::string text1 = "The quick brown fox";
     std::string text2 = "The quick red fox";
     Comparator comparator = Comparator();
-    std::vector<Change> changes = comparator.detectChanges(text1, text2);
+    std::vector<Change> changes = comparator.detectChanges(text1, text2, 0, 0);
     ASSERT_EQ(changes[0].getType(), ChangeType::Deletion);
     ASSERT_EQ(changes[0].getText(), "brown");
     ASSERT_EQ(changes[1].getType(), ChangeType::Addition);
@@ -96,7 +96,7 @@ TEST(ComparatorTest, detectChangesSpaces) {
     std::string text1 = "The    quick brown fox";
     std::string text2 = "The quick brown fox";
     Comparator comparator = Comparator();
-    std::vector<Change> changes = comparator.detectChanges(text1, text2);
+    std::vector<Change> changes = comparator.detectChanges(text1, text2, 0, 0);
     ASSERT_EQ(changes[0].getType(), ChangeType::Deletion);
     ASSERT_EQ(changes[0].getText(), "    ");
     ASSERT_EQ(changes[1].getType(), ChangeType::Addition);
@@ -123,8 +123,8 @@ TEST(AppTest, compareBasicTest) {
     App app = App(f1, f2);
     auto changes = app.compare();
     for (auto change : changes) {
-        std::cout << "Original:[" + change.getOriginal().getText() + "]" << std::endl;
-        std::cout << "Modified:[" + change.getModified().getText() + "]" << std::endl;
+        std::cout << "Original:[" + change.getOriginal().getText() + "] " << change.getOriginal().getStartPos() << " " << change.getOriginal().getEndPos() << std::endl;
+        std::cout << "Modified:[" + change.getModified().getText() + "]" << change.getModified().getStartPos() << " " << change.getModified().getEndPos() << std::endl;
         for (auto c : change.getChanges()) {
             switch(c.getType()) {
                 case ChangeType::Addition:
@@ -134,7 +134,8 @@ TEST(AppTest, compareBasicTest) {
                     std::cout << "Deletion: ";
                     break;
             }
-            std::cout << "[" + c.getText() + "]" << std::endl;
+            std::cout << "[" + c.getText() + "] ";
+            std::cout << c.getPosition() << std::endl;
         }
     }
 }
