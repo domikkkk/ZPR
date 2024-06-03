@@ -15,6 +15,7 @@
 #include <QGridLayout>
 #include <vector>
 #include <button.hpp>
+#include <mergedWindow.hpp>
 
 
 class MainWindow : public QMainWindow {
@@ -27,6 +28,7 @@ public:
 
 private:
     QGridLayout *layout;
+    MergedWindow *mergedWindow;
     std::vector<Button*> buttons;
     int progress = 0;  // chyba będzie do usunięcia
     bool cancel = false;

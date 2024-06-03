@@ -10,7 +10,7 @@
 #include <colors.hpp>
 
 
-MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
+MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), mergedWindow(new MergedWindow(this)) {
    QLabel *welcome = gen_text("Welcome!", 24, true, this);  // Dodanie głównego napisu
    welcome->setAlignment(Qt::AlignHCenter);
    this->setWindowTitle("Files compare");
@@ -99,7 +99,7 @@ void MainWindow::run() {
    QProgressDialog progressDialog("Running...", "Cancel", 0, 100, this);
    progressDialog.setWindowModality(Qt::WindowModal);
    progressDialog.setWindowTitle("Progress");
-   connect(&progressDialog, &QProgressDialog::canceled, this, &MainWindow::onProgressDialogCanceled);
+   this->connect(&progressDialog, &QProgressDialog::canceled, this, &MainWindow::onProgressDialogCanceled);
    this->cancel = false;
    this->progress = 0;
 
@@ -150,11 +150,8 @@ void MainWindow::merge() {
    }
    // merging
    std::string mergedText = "Zmergowane jakiś tekst";
-   QMainWindow *mergedWindow = new QMainWindow(this);
-   mergedWindow->setWindowTitle("Merged Text");
-
-   TWidget *mergedWidget = new TWidget(QString::fromStdString(mergedText), mergedWindow);
-   mergedWindow->setCentralWidget(mergedWidget);
-   mergedWindow->resize(800, 600);
-   mergedWindow->show();
+   TWidget *mergedWidget = new TWidget(QString::fromStdString(mergedText), this);
+   
+   this->mergedWindow->addTWidget(mergedWidget);
+   this->mergedWindow->show();
 }
