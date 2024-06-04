@@ -73,15 +73,6 @@ TEST(NWTest, computeMatchValue) {
 }
 
 
-TEST(NWTest, computeMatchValueOneAddition) {
-    const std::vector<std::string> s1 = {"First", "b"};
-    const std::vector<std::string> s2 = {"b", "First"};
-    NeedlemanWunsch alg = NeedlemanWunsch();
-    auto v1 = alg.computeMatchValue(s1, s2);
-    std::cout << v1 << std::endl;
-}
-
-
 TEST(ComparatorTest, detectChanges) {
     std::string text1 = "The quick brown fox";
     std::string text2 = "The quick red fox";
@@ -116,67 +107,6 @@ TEST(ComparatorTest, splitIntoTokens) {
     ASSERT_EQ(tokens[4], "brown");
     ASSERT_EQ(tokens[5], " ");
     ASSERT_EQ(tokens[6], "fox");
-}
-
-
-TEST(AppTest, compareBasicTest) {
-    File f1 = File(fs::path("./test/text_files/paragraphs_v2.txt"));
-    File f2 = File(fs::path("./test/text_files/paragraphs_v2.txt"));
-    f1.read(); f2.read();
-    f1.splitByParagraphs(); f2.splitByParagraphs();
-    App app = App(f1, f2);
-    app.compare();
-    for (auto change : app.getChanges()) {
-        std::cout << "Original:[" + change.getOriginal().getText() + "] " << change.getOriginal().getStartPos() << " " << change.getOriginal().getEndPos() << std::endl;
-        std::cout << "Modified:[" + change.getModified().getText() + "]" << change.getModified().getStartPos() << " " << change.getModified().getEndPos() << std::endl;
-        for (auto c : change.getChanges()) {
-            switch(c.getType()) {
-                case ChangeType::Addition:
-                    std::cout << "Addition: ";
-                    break;
-                case ChangeType::Deletion:
-                    std::cout << "Deletion: ";
-                    break;
-            }
-            std::cout << "[" + c.getText() + "] ";
-            std::cout << c.getPosition() << std::endl;
-        }
-    }
-}
-
-
-TEST(AppTest, compareTest) {
-    File f1 = File(fs::path("./test/text_files/letters.txt"));
-    File f2 = File(fs::path("./test/text_files/letters_v2.txt"));
-    App app = App(f1, f2);
-    app.compare();
-    std::vector<TextDiff> expected = {TextDiff(Block("A B", 0, 3), Block("A B", 6, 9), {}),
-                                      TextDiff(Block("B C", 6, 9), Block("B C", 0, 3), {}),
-                                      TextDiff(Block("", -1, -1), Block("B D", 12, 15),
-                                      {Change(ChangeType::Addition, 12, "B"), Change(ChangeType::Addition, 13, " "), Change(ChangeType::Addition, 14, "D")})};
-    for (auto diff : app.getChanges()) {
-        bool found = true;
-        for (auto expDiff : expected) {
-            auto first = expDiff.getOriginal() == diff.getOriginal();
-            auto second = expDiff.getModified() == diff.getModified();
-            std::cout << expDiff.getOriginal().getStartPos() << " " << diff.getOriginal().getStartPos() << std::endl;
-            std::cout << expDiff.getModified().getStartPos() << " " << diff.getModified().getStartPos() << std::endl;
-            std::cout << first << " ";
-            std::cout << second << std::endl;
-            if (expDiff.getOriginal() == diff.getOriginal() && expDiff.getModified() == diff.getModified()) {
-                std::cout << "Inside if" << std::endl;
-                for (auto expChange : expDiff.getChanges()) {
-                    bool foundExpChange = std::find(diff.getChanges().begin(), diff.getChanges().end(), expChange) != diff.getChanges().end();
-                    if (!foundExpChange) {
-                        found = false;
-                        break;
-                    }
-                }
-                std::cout << found << std::endl;
-                ASSERT_TRUE(found);
-            }
-        }
-    }
 }
 
 

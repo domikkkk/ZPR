@@ -6,6 +6,8 @@
 #include <vector>
 #include <sstream>
 #include <compare_files/change.hpp>
+#include <compare_files/file.hpp>
+
 
 class Comparator {
 public:

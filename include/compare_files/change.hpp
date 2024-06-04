@@ -7,7 +7,8 @@
 
 enum class ChangeType {
     Addition,
-    Deletion
+    Deletion,
+    Shift
 };
 
 class Change {
