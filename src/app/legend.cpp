@@ -30,6 +30,6 @@ void LegendDialog::initLegend() {
     this->items = {
         {Colors::RED, "Usunięcie"},
         {Colors::GREEN, "Dodanie"},
-        {Colors::YELLOW, "Zmiana"},
-    }; // do zmian pewnie
+        {Colors::YELLOW, "Przesunięcie"},
+    };
 }

@@ -28,7 +28,6 @@ private:
     TWidget *left;
     TWidget *right;
     App app;
-    int progress = 0;  // chyba będzie do usunięcia
     bool cancel = false;
     bool can_merge = false;
     bool editied = false;
