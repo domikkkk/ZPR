@@ -2,7 +2,6 @@
 
 
 File::File(const fs::path &path): path(path) {
-    // this->read();  // może jednak nie czytajmy
 }
 
 
@@ -78,23 +77,48 @@ void File::split(const std::string &delimiter) {
 }
 
 
+std::size_t countCharacters(const std::string& filename) {
+    std::wifstream file(filename, std::ios::binary);
+    if (!file.is_open()) {
+        return 0;
+    }
+    file.imbue(std::locale(file.getloc(), new std::codecvt_utf8<wchar_t>));
+
+    std::wstring content;
+    wchar_t ch;
+    while (file.get(ch)) {
+        content.push_back(ch);
+    }
+
+    return content.size();
+}
+
+
 void File::splitByParagraphs() {
     std::size_t pos = 0;
     std::size_t found;
     this->splited = true;
     const std::string delimiter = "\n\n";
 
+    std::size_t totalChars = countCharacters(path.string());
+
     while ((found = text.find(delimiter, pos)) != std::string::npos) {
-        this->blocks.push_back(Block(text.substr(pos, found - pos), pos, found));
+        std::size_t start = pos;
+        std::size_t length = found - pos;
+        this->blocks.push_back(Block(text.substr(start, length), start, found));
+
         pos = found + delimiter.size();
-        while (text[pos] == '\r' && text[pos + 1] == '\n') {
-            pos += 2;
+        while (text[pos] == '\n') {
+            pos++;
         }
     }
     if (pos < text.size()) {
-        this->blocks.push_back(Block(text.substr(pos), pos, text.size()));
+        std::size_t start = pos;
+        std::size_t length = totalChars - pos;
+        this->blocks.push_back(Block(text.substr(start), start, totalChars));
     }
 }
+
 
 
 bool File::was_read() const {

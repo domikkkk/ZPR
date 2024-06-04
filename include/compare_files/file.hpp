@@ -36,5 +36,6 @@ protected:
     std::vector<Block> blocks;  // blocks of texts
 };
 
+std::size_t countCharacters(const std::string& filename);
 
 #endif
