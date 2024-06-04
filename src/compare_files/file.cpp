@@ -13,6 +13,7 @@ Block &File::operator[](const size_t &i) {
 
 void File::read() {
     std::ifstream fileStream(this->path);
+    this->blocks.clear();
     if (fs::exists(this->path)) {
         if (fileStream.is_open()) {
             text.assign((std::istreambuf_iterator<char>(fileStream)),
@@ -29,6 +30,7 @@ void File::read() {
 void File::change_filename(const fs::path &new_path) {
     this->path = new_path;
     this->m_read = false;
+    this->splited = false;
 }
 
 
@@ -63,6 +65,7 @@ void File::split(const std::string &delimiter) {
 void File::splitByParagraphs() {
     std::size_t pos = 0;
     std::size_t found;
+    this->splited = true;
     const std::string delimiter = "\n\n";
 
     while ((found = text.find(delimiter, pos)) != std::string::npos) {
@@ -85,4 +88,9 @@ bool File::was_read() const {
 
 int File::get_size() const {
     return this->blocks.size();
+}
+
+
+bool File::wasSplited() const {
+    return this->splited;
 }

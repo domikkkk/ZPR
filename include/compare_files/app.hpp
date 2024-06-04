@@ -13,11 +13,12 @@ private:
     File f1, f2;
 public:
     App() = default;
-    App(File f1, File f2) : f1(f1), f2(f2) {};
+    App(const File &f1, const File &f2) : f1(f1), f2(f2) {};
     std::vector<TextDiff> compare();
     std::vector<std::pair<Block, Block>> findSimilarBlocks();
     std::vector<TextDiff> findChanges(std::vector<std::pair<Block, Block>> similarBlocks) const;
-    void addFiles(const File &f1, const File &f2);
+    void setFiles(const File &f1, const File &f2);
+    void calculateMaxCount();
     int counter = 0;
     int maxCount = 0;
 private:

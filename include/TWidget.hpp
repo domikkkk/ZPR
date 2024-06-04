@@ -23,7 +23,7 @@ public:
     void readText();
     void highlightTextRange(const int &from, const int &to, const QColor &color);
     const File &getFile() const;
-    int column = -1;
+    void splitFile();
 
 protected:
 

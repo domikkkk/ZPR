@@ -31,6 +31,8 @@ private:
     QGridLayout *layout;
     MergedWindow *mergedWindow;
     std::vector<Button*> buttons;
+    TWidget *left;
+    TWidget *right;
     App app;
     int progress = 0;  // chyba będzie do usunięcia
     bool cancel = false;

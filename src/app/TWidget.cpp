@@ -62,6 +62,11 @@ void TWidget::readText() {
 }
 
 
+void TWidget::splitFile() {
+    if (!this->file.wasSplited()) this->file.splitByParagraphs();
+}
+
+
 void TWidget::preview() {
     if (this->textEdit->isHidden()) {
         this->readText();
@@ -70,6 +75,7 @@ void TWidget::preview() {
     } else {
         this->hideText();
     }
+    std::cout << this->file.getBlocks().size() << '\n';
 }
 
 

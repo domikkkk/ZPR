@@ -12,6 +12,7 @@
 
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
+   this->mergedWindow = new MergedWindow(new TWidget);
    QLabel *welcome = gen_text("Welcome!", 24, true, this);  // Dodanie głównego napisu
    welcome->setAlignment(Qt::AlignHCenter);
    this->setWindowTitle("Files compare");
@@ -73,7 +74,11 @@ void MainWindow::addFile() {
       clickedButton->setText("Change file");
       TWidget *textwidget = new TWidget(File(filePath.toStdString()), this);
       textwidget->setMaximumWidth(TWIDGET_WIDTH * this->width() / this->layout->columnCount());
-      textwidget->column = column;
+      if (column < TWIDGET_WIDTH) {
+         this->left = textwidget;
+      } else {
+         this->right = textwidget;
+      }
       this->layout->addWidget(textwidget, clickedButton->row + 1, column, TWIDGET_HEIGTH, TWIDGET_WIDTH);
    }
 }
@@ -97,7 +102,12 @@ void MainWindow::run() {
    for (TWidget *t : twidgets) {
       t->readText();
       t->hideText();
+      t->splitFile();
    }
+   File f1 = this->left->getFile();
+   File f2 = this->right->getFile();
+   this->app.setFiles(f1, f2);  // prepare file to compare
+   this->app.calculateMaxCount();
 
    QProgressDialog progressDialog("Running...", "Cancel", 0, this->app.maxCount, this);
    progressDialog.setWindowModality(Qt::WindowModal);
@@ -109,7 +119,6 @@ void MainWindow::run() {
    QFuture<void> future = QtConcurrent::run(this, &MainWindow::longRunningTask);
    while (!future.isFinished()) {
         progressDialog.setValue(this->app.counter);
-        QThread::msleep(100);
    }
 
    progressDialog.close();
@@ -123,28 +132,16 @@ void MainWindow::onProgressDialogCanceled() {
 
 void MainWindow::longRunningTask() {
    QList<TWidget *> twidgets = this->centralWidget()->findChildren<TWidget *>();
-   TWidget *left;
-   TWidget *right;
-   if (twidgets[0]->column < twidgets[1]->column) {
-      left = twidgets[0];
-      right = twidgets[1];
-   } else {
-      left = twidgets[1];
-      right = twidgets[0];
-   }
-   File f1 = left->getFile();
-   File f2 = right->getFile();
-   this->app.addFiles(f1, f2);
    std::vector<TextDiff> changes = this->app.compare();
 
    for (auto change: changes) {
       for (auto c: change.getChanges()) {
          switch(c.getType()) {
             case ChangeType::Addition:
-               right->highlightTextRange(c.getPosition(), c.getPosition() + c.getText().size(), Colors::GREEN);
+               this->right->highlightTextRange(c.getPosition(), c.getPosition() + c.getText().size(), Colors::GREEN);
             break;
             case ChangeType::Deletion:
-               left->highlightTextRange(c.getPosition(), c.getPosition() + c.getText().size(), Colors::RED);
+               this->left->highlightTextRange(c.getPosition(), c.getPosition() + c.getText().size(), Colors::RED);
             break;
          }
       }
@@ -169,6 +166,7 @@ void MainWindow::merge() {
    }
    // merging
    if (this->editied) {
+      delete this->mergedWindow;
       std::string mergedText = "Zmergowany jakiś tekst";
       TWidget *mergedWidget = new TWidget(QString::fromStdString(mergedText), this);
       this->mergedWindow = new MergedWindow(mergedWidget, this);
