@@ -123,8 +123,8 @@ TEST(AppTest, compareBasicTest) {
     f1.read(); f2.read();
     f1.splitByParagraphs(); f2.splitByParagraphs();
     App app = App(f1, f2);
-    auto changes = app.compare();
-    for (auto change : changes) {
+    app.compare();
+    for (auto change : app.getChanges()) {
         std::cout << "Original:[" + change.getOriginal().getText() + "] " << change.getOriginal().getStartPos() << " " << change.getOriginal().getEndPos() << std::endl;
         std::cout << "Modified:[" + change.getModified().getText() + "]" << change.getModified().getStartPos() << " " << change.getModified().getEndPos() << std::endl;
         for (auto c : change.getChanges()) {
@@ -147,12 +147,12 @@ TEST(AppTest, compareTest) {
     File f1 = File(fs::path("./test/text_files/letters.txt"));
     File f2 = File(fs::path("./test/text_files/letters_v2.txt"));
     App app = App(f1, f2);
-    auto diffs = app.compare();
+    app.compare();
     std::vector<TextDiff> expected = {TextDiff(Block("A B", 0, 3), Block("A B", 6, 9), {}),
                                       TextDiff(Block("B C", 6, 9), Block("B C", 0, 3), {}),
                                       TextDiff(Block("", -1, -1), Block("B D", 12, 15),
                                       {Change(ChangeType::Addition, 12, "B"), Change(ChangeType::Addition, 13, " "), Change(ChangeType::Addition, 14, "D")})};
-    for (auto diff : diffs) {
+    for (auto diff : app.getChanges()) {
         bool found = true;
         for (auto expDiff : expected) {
             auto first = expDiff.getOriginal() == diff.getOriginal();
