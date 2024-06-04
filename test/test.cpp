@@ -30,7 +30,7 @@ TEST(KMPTest, ExtendedTest) {
 
 
 TEST(FileTest, ReadFile) {
-    File file = File(fs::path("./test/test_file.txt"));
+    File file = File(fs::path("./test/text_files/test_file.txt"));
     file.read();
     std::string expected = "This is a file for testing file operations";
     ASSERT_EQ(expected, file.getText());
@@ -38,7 +38,7 @@ TEST(FileTest, ReadFile) {
 
 
 TEST(FileTest, Split) {
-    File file = File(fs::path("./test/test_file.txt"));
+    File file = File(fs::path("./test/text_files/test_file.txt"));
     file.read();
     file.split(" ");
     Block first = Block("This", 0, 4);
@@ -49,7 +49,7 @@ TEST(FileTest, Split) {
 
 
 TEST(FileTest, SplitByParagraphs) {
-    File file = File(fs::path("./test/par.txt"));
+    File file = File(fs::path("./test/text_files/par.txt"));
     file.read();
     file.splitByParagraphs();
     Block first = Block("First", 0, 4);
@@ -118,8 +118,8 @@ TEST(ComparatorTest, splitIntoTokens) {
 
 
 TEST(AppTest, compareBasicTest) {
-    File f1 = File(fs::path("./test/paragraphs.txt"));
-    File f2 = File(fs::path("./test/paragraphs_v2.txt"));
+    File f1 = File(fs::path("./test/text_files/paragraphs.txt"));
+    File f2 = File(fs::path("./test/text_files/paragraphs_v2.txt"));
     f1.read(); f2.read();
     f1.splitByParagraphs(); f2.splitByParagraphs();
     App app = App(f1, f2);
@@ -141,6 +141,18 @@ TEST(AppTest, compareBasicTest) {
         }
     }
 }
+
+
+TEST(AppTest, compareTest) {
+    File f1 = File(fs::path("./test/text_files/paragraphs.txt"));
+    File f2 = File(fs::path("./test/text_files/paragraphs_v2.txt"));
+    App app = App(f1, f2);
+    auto changes = app.compare();
+    for (auto change : changes) {
+    }
+}
+
+
 int main(int argc, char **argv) {
     ::testing::InitGoogleTest(&argc, argv);
     return RUN_ALL_TESTS();
