@@ -19,8 +19,10 @@ public:
     Change(ChangeType type, int position, std::string text) :
         type(type), position(position), text(text) {};
     ChangeType getType() const;
-    int getPosition() const;
+    size_t getPosition() const;
     std::string getText() const;
+
+    bool operator==(const Change& other) const;
 };
 
 

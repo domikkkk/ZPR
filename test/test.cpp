@@ -142,11 +142,36 @@ TEST(AppTest, compareBasicTest) {
 
 
 TEST(AppTest, compareTest) {
-    File f1 = File(fs::path("./test/text_files/paragraphs.txt"));
-    File f2 = File(fs::path("./test/text_files/paragraphs_v2.txt"));
+    File f1 = File(fs::path("./test/text_files/letters.txt"));
+    File f2 = File(fs::path("./test/text_files/letters_v2.txt"));
     App app = App(f1, f2);
-    auto changes = app.compare();
-    for (auto change : changes) {
+    auto diffs = app.compare();
+    std::vector<TextDiff> expected = {TextDiff(Block("A B", 0, 3), Block("A B", 6, 9), {}),
+                                      TextDiff(Block("B C", 6, 9), Block("B C", 0, 3), {}),
+                                      TextDiff(Block("", -1, -1), Block("B D", 12, 15), 
+                                      {Change(ChangeType::Addition, 12, "B"), Change(ChangeType::Addition, 13, " "), Change(ChangeType::Addition, 14, "D")})};
+    for (auto diff : diffs) {
+        bool found = true;
+        for (auto expDiff : expected) {
+            auto first = expDiff.getOriginal() == diff.getOriginal();
+            auto second = expDiff.getModified() == diff.getModified();
+            std::cout << expDiff.getOriginal().getStartPos() << " " << diff.getOriginal().getStartPos() << std::endl;
+            std::cout << expDiff.getModified().getStartPos() << " " << diff.getModified().getStartPos() << std::endl;
+            std::cout << first << " ";
+            std::cout << second << std::endl;
+            if (expDiff.getOriginal() == diff.getOriginal() && expDiff.getModified() == diff.getModified()) {
+                std::cout << "Inside if" << std::endl;
+                for (auto expChange : expDiff.getChanges()) {
+                    bool foundExpChange = std::find(diff.getChanges().begin(), diff.getChanges().end(), expChange) != diff.getChanges().end();
+                    if (!foundExpChange) {
+                        found = false;
+                        break;
+                    }
+                }
+                std::cout << found << std::endl;
+                ASSERT_TRUE(found);
+            }
+        }
     }
 }
 
