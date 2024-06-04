@@ -13,7 +13,6 @@ TWidget::TWidget(QWidget *parent)
     this->scrollArea->setWidget(this->textEdit);
     this->scrollArea->setWidgetResizable(true);
     this->textEdit->setWordWrapMode(QTextOption::NoWrap);
-    this->textEdit->setReadOnly(true);
 }
 
 
@@ -25,9 +24,10 @@ TWidget::TWidget(const File &file, QWidget *parent) : TWidget(parent) {
     this->titleLabel->setAlignment(Qt::AlignCenter);
 
     this->textEdit->setPlainText(QString::fromStdString(this->file.getText()));
+    this->textEdit->setReadOnly(true);
     this->textEdit->hide();
 
-    this->button->setText("Preview");
+    this->button->setText("Podgląd");
     this->connect(this->button, &QPushButton::clicked, this, &TWidget::preview);
 
     this->layout->addWidget(this->titleLabel);
@@ -38,12 +38,14 @@ TWidget::TWidget(const File &file, QWidget *parent) : TWidget(parent) {
 
 
 TWidget::TWidget(const QString &text, QWidget *parent) : TWidget(parent) {
+    this->titleLabel = gen_text("Oryginalny plik", 18, true, this);
+    this->titleLabel->setAlignment(Qt::AlignCenter);
     this->textEdit->setPlainText(text);
-    this->button->setText("Save");
+    this->button->setText("Zapisz jako");
     this->connect(this->button, &QPushButton::clicked, this, &TWidget::onSave);
     this->file = File();
-    this->file.write(text.toStdString());
     
+    this->layout->addWidget(this->titleLabel);
     this->layout->addWidget(this->scrollArea);
     this->layout->addWidget(this->button, 0, Qt::AlignCenter);
     this->setLayout(this->layout);
@@ -52,7 +54,7 @@ TWidget::TWidget(const QString &text, QWidget *parent) : TWidget(parent) {
 
 void TWidget::hideText() {
     this->textEdit->hide();
-    this->button->setText("Preview");
+    this->button->setText("Podgląd");
 }
 
 
@@ -73,10 +75,8 @@ void TWidget::splitFile() {
 void TWidget::preview() {
     if (this->textEdit->isHidden()) {
         this->readText();
-        QString text = this->textEdit->toPlainText();
-        std::cout << text.length() - 1 << '\n';
         this->textEdit->show();
-        this->button->setText("Hide");
+        this->button->setText("Ukryj");
     } else {
         this->hideText();
     }
@@ -87,7 +87,7 @@ void TWidget::onSave() {
     QString selectedFilter;
     QString filePath = QFileDialog::getSaveFileName(
         this,
-        tr("Save File"),
+        tr("Format pliku"),
         "",
         tr("*.txt;;*.md;;*.cpp;;*.hpp;;*.c;;*.h;;All Files (*)"),
         &selectedFilter
@@ -111,6 +111,7 @@ void TWidget::onSave() {
             filePath += extension;
         }
         this->file.change_filename(filePath.toStdString());
+        this->file.write(this->textEdit->toPlainText().toStdString());
         this->file.save();
     }
 }
@@ -154,7 +155,6 @@ const File &TWidget::getFile() const {
 QLabel *gen_text(const QString &text, const int &size, const bool &if_bold, QWidget *parent) {
     QLabel *Label = new QLabel(text, parent);
     Label->setFont(gen_font(size, if_bold));
-   
     return Label;
 }
 

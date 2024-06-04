@@ -49,11 +49,6 @@ std::vector<std::pair<Block, Block>> App::findSimilarBlocks() {
 
         return a_val > b_val;
     });
-    // for (auto [b1, b2, score] : matches) {
-    //     std::cout << "[" + b1.getText() + "] ";
-    //     std::cout << "[" + b2.getText() + "] ";
-    //     std::cout << score << std::endl;
-    // }
     std::vector<std::pair<Block, Block>> similarBlocks = {};
     std::vector<bool> f1BlockMatched(f1.getBlocks().size(), false);
     std::vector<bool> f2BlockMatched(f2.getBlocks().size(), false);
@@ -73,22 +68,25 @@ std::vector<std::pair<Block, Block>> App::findSimilarBlocks() {
 }
 
 
-std::vector<TextDiff> App::findChanges(std::vector<std::pair<Block, Block>> similarBlocks) const {
-    std::vector<TextDiff> changes = {};
+void App::findChanges(std::vector<std::pair<Block, Block>> similarBlocks) {
+    this->changes.clear();
     Comparator comp = Comparator();
     for (auto [original, modified] : similarBlocks) {
         auto changesInBlocks = comp.detectChanges(original.getText(), modified.getText(), original.getStartPos(), modified.getStartPos());
-        changes.push_back(TextDiff(original, modified, changesInBlocks));
+        this->changes.push_back(TextDiff(original, modified, changesInBlocks));
     }
-    return changes;
 }
 
 
-std::vector<TextDiff> App::compare() {
+std::vector<TextDiff> App::getChanges() const {
+    return this->changes;
+}
+
+
+void App::compare() {
     this->counter = 0;
     auto similarBlocks = findSimilarBlocks();
-    auto changes = findChanges(similarBlocks);
-    return changes;
+    this->findChanges(similarBlocks);
 }
 
 

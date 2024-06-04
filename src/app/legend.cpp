@@ -4,7 +4,7 @@
 
 
 LegendDialog::LegendDialog(QWidget *parent) : QDialog(parent) {
-    this->setWindowTitle("Legend");
+    this->setWindowTitle("Legenda");
     this->resize(200, 100);
     this->dialogLayout = new QGridLayout(this);
     
@@ -26,8 +26,8 @@ LegendDialog::LegendDialog(QWidget *parent) : QDialog(parent) {
 
 void LegendDialog::initLegend() {
     this->items = {
-        {Colors::RED, "Deletion"},
-        {Colors::GREEN, "Addittion"},
-        {Colors::YELLOW, "Changes"},
+        {Colors::RED, "Usunięcie"},
+        {Colors::GREEN, "Dodanie"},
+        {Colors::YELLOW, "Zmiana"},
     }; // do zmian pewnie
 }

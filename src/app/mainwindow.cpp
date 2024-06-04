@@ -7,22 +7,21 @@
 #include <TWidget.hpp>
 #include <legend.hpp>
 #include <namespaces.hpp>
-#include <compare_files/textdiff.hpp>
 
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
-   QLabel *welcome = gen_text("Welcome!", 24, true, this);  // Dodanie głównego napisu
+   QLabel *welcome = gen_text("Witamy!", 24, true, this);  // Dodanie głównego napisu
    welcome->setAlignment(Qt::AlignHCenter);
-   this->setWindowTitle("Files compare");
+   this->setWindowTitle("Komparator");
    this->resize(1200, 800);
 
    this->layout = new QGridLayout;
 
-   this->add_button(new Button("Add file", MWindow::ADDFILEBUTTON_Y, MWindow::LEFT_ADDFILEBUTTON_X, this), &MainWindow::addFile);
-   this->add_button(new Button("Add file", MWindow::ADDFILEBUTTON_Y, MWindow::RIGHT_ADDFILEBUTTON_X, this), &MainWindow::addFile);
-   this->add_button(new Button("Run", MWindow::RUNBUTTON_Y, MWindow::HALF_WIDTH, this), &MainWindow::run);
-   this->add_button(new Button("Merge", MWindow::MERGEBUTTON_Y, MWindow::HALF_WIDTH, this), &MainWindow::merge);
-   this->add_button(new Button("Legend", MWindow::LEGEND, MWindow::HALF_WIDTH, this), &MainWindow::displayLegend);
+   this->add_button(new Button("Dodaj plik", MWindow::ADDFILEBUTTON_Y, MWindow::LEFT_ADDFILEBUTTON_X, this), &MainWindow::addFile);
+   this->add_button(new Button("Dodaj plik", MWindow::ADDFILEBUTTON_Y, MWindow::RIGHT_ADDFILEBUTTON_X, this), &MainWindow::addFile);
+   this->add_button(new Button("Porównaj", MWindow::RUNBUTTON_Y, MWindow::HALF_WIDTH, this), &MainWindow::run);
+   this->add_button(new Button("Połącz", MWindow::MERGEBUTTON_Y, MWindow::HALF_WIDTH, this), &MainWindow::merge);
+   this->add_button(new Button("Legenda", MWindow::LEGEND, MWindow::HALF_WIDTH, this), &MainWindow::displayLegend);
    for (auto button: this->buttons) button->setMaximumWidth(100);
 
    this->layout->setVerticalSpacing(20);
@@ -58,7 +57,7 @@ void MainWindow::add_button(Button *button, void (MainWindow::*funtion)()) {
 
 void MainWindow::addFile() {
    Button *clickedButton = qobject_cast<Button *>(sender());
-   QString filePath = QFileDialog::getOpenFileName(this, tr("Choose file"), QDir::currentPath(), tr("All files (*.*)"));
+   QString filePath = QFileDialog::getOpenFileName(this, tr("Wybierz plik"), QDir::currentPath(), tr("Wszystkie pliki (*.*)"));
 
    int column = clickedButton->column - 1;
    QLayoutItem *item = this->layout->itemAtPosition(clickedButton->row + 1, column);
@@ -69,7 +68,7 @@ void MainWindow::addFile() {
       twidget->update();
    } else {
       if (filePath.size() == 0) return;
-      clickedButton->setText("Change file");
+      clickedButton->setText("Zmień plik");
       TWidget *textwidget = new TWidget(File(filePath.toStdString()), this);
       textwidget->setMaximumWidth(TWindow::WIDTH * this->width() / this->layout->columnCount());
       if (column < TWindow::WIDTH) {
@@ -94,7 +93,7 @@ void MainWindow::resizeEvent(QResizeEvent *event) {
 void MainWindow::run() {
    auto twidgets = this->centralWidget()->findChildren<TWidget *>();
    if (twidgets.size() < 2) {
-      QMessageBox::warning(this, "Warning", "You must add two files before running.");
+      QMessageBox::warning(this, "Uwaga!", "Najpierw musisz dodać 2 pliki zanim uruchomisz.");
       return;
    }
    for (TWidget *t : twidgets) {
@@ -108,9 +107,9 @@ void MainWindow::run() {
    this->app.setFiles(f1, f2);  // prepare file to compare
    this->app.calculateMaxCount();
 
-   QProgressDialog progressDialog("Running...", "Cancel", 0, this->app.maxCount, this);
+   QProgressDialog progressDialog("Działanie...", "Anuluj", 0, this->app.maxCount, this);
    progressDialog.setWindowModality(Qt::WindowModal);
-   progressDialog.setWindowTitle("Progress");
+   progressDialog.setWindowTitle("Postęp");
    this->connect(&progressDialog, &QProgressDialog::canceled, this, &MainWindow::onProgressDialogCanceled);
    this->cancel = false;
    this->progress = 0;
@@ -131,13 +130,12 @@ void MainWindow::onProgressDialogCanceled() {
 
 void MainWindow::longRunningTask() {
    QList<TWidget *> twidgets = this->centralWidget()->findChildren<TWidget *>();
-   std::vector<TextDiff> changes = this->app.compare();
+   this->app.compare();
 
-   for (auto change: changes) {
+   for (auto change: app.getChanges()) {
       for (auto c: change.getChanges()) {
          switch(c.getType()) {
             case ChangeType::Addition:
-            std::cout << c.getText() << ' ' << c.getPosition() <<'\n';
                this->right->highlightTextRange(c.getPosition(), c.getPosition() + c.getText().size(), Colors::GREEN);
             break;
             case ChangeType::Deletion:
@@ -161,15 +159,15 @@ void MainWindow::displayLegend() {
 
 void MainWindow::merge() {
    if (!this->can_merge) {
-      QMessageBox::warning(this, "Warning", "You must run before merging.");
+      QMessageBox::warning(this, "Uwaga!", "Najpierw musisz porównać zanim złączysz pliki.");
       return;
    }
-   // merging
    if (this->editied) {
       if (this->mergedWindow != 0) delete this->mergedWindow;
-      std::string mergedText = "Zmergowany jakiś tekst";
-      TWidget *mergedWidget = new TWidget(QString::fromStdString(mergedText), this);
+      std::string TextToMerge = this->left->getFile().getText();
+      TWidget *mergedWidget = new TWidget(QString::fromStdString(TextToMerge), this);
       this->mergedWindow = new MergedWindow(mergedWidget, this);
+      this->mergedWindow->merge(this->app.getChanges());
       this->editied = false;
    }
    
