@@ -10,7 +10,7 @@ MergedWindow::MergedWindow(TWidget *twidget, QWidget *parent): QMainWindow(paren
     QHBoxLayout *horizontalLayout = new QHBoxLayout(centralWidget);
 
     // TWidget po lewej stronie
-    horizontalLayout->addWidget(twidget, 2);
+    horizontalLayout->addWidget(twidget, 3);
 
     // Sekcja z przyciskami po prawej stronie
     QWidget *buttonContainer = new QWidget(this);

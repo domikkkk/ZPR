@@ -89,27 +89,30 @@ void printBlocks(File& f1, File&f2) {
 }
 
 
-std::vector<TextDiff> App::findChanges(std::vector<std::pair<Block, Block>> similarBlocks) const {
-    std::vector<TextDiff> changes = {};
+void App::findChanges(std::vector<std::pair<Block, Block>> similarBlocks) {
+    this->changes.clear();
     Comparator comp = Comparator();
     for (auto [original, modified] : similarBlocks) {
         auto changesInBlocks = comp.detectChanges(original.getText(), modified.getText(), original.getStartPos(), modified.getStartPos());
-        changes.push_back(TextDiff(original, modified, changesInBlocks));
+        this->changes.push_back(TextDiff(original, modified, changesInBlocks));
     }
-    return changes;
 }
 
 
-std::vector<TextDiff> App::compare() {
+std::vector<TextDiff> App::getChanges() const {
+    return this->changes;
+}
+
+
+void App::compare() {
     // 1. Split files into blocks
     // 2. Find similar blocks with NW
     // 3. Find differences in blocks with Comparator
     // 4. Return differences
     this->counter = 0;
-    printBlocks(f1, f2);
+    // printBlocks(f1, f2);
     auto similarBlocks = findSimilarBlocks();
-    auto changes = findChanges(similarBlocks);
-    return changes;
+    this->findChanges(similarBlocks);
 }
 
 

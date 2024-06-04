@@ -7,7 +7,6 @@
 #include <TWidget.hpp>
 #include <legend.hpp>
 #include <namespaces.hpp>
-#include <compare_files/textdiff.hpp>
 
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
@@ -131,9 +130,9 @@ void MainWindow::onProgressDialogCanceled() {
 
 void MainWindow::longRunningTask() {
    QList<TWidget *> twidgets = this->centralWidget()->findChildren<TWidget *>();
-   std::vector<TextDiff> changes = this->app.compare();
+   this->app.compare();
 
-   for (auto change: changes) {
+   for (auto change: app.getChanges()) {
       for (auto c: change.getChanges()) {
          switch(c.getType()) {
             case ChangeType::Addition:
