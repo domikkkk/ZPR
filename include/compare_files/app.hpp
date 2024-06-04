@@ -7,6 +7,8 @@
 #include <compare_files/nw.hpp>
 #include <compare_files/comparator.hpp>
 #include <vector>
+#include <cmath>
+
 
 class App {
 private:

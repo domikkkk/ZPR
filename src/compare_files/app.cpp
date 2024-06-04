@@ -40,8 +40,23 @@ std::vector<std::pair<Block, Block>> App::findSimilarBlocks() {
     }
     // Sort matches by normalized match value
     std::sort(matches.begin(), matches.end(), [](const auto& a, const auto& b) {
-        return std::get<2>(a) > std::get<2>(b);
+        float a_val = std::get<2>(a);
+        float b_val = std::get<2>(b);
+
+        // Handle NaN values
+        if (std::isnan(a_val)) {
+            return false; // Move NaNs to the end
+        } else if (std::isnan(b_val)) {
+            return true; // Move NaNs to the end
+        }
+
+        return a_val > b_val; // Normal comparison
     });
+    for (auto [b1, b2, score] : matches) {
+        std::cout << "[" + b1.getText() + "] ";
+        std::cout << "[" + b2.getText() + "] ";
+        std::cout << score << std::endl;
+    }
     std::vector<std::pair<Block, Block>> similarBlocks = {};
     std::vector<bool> f1BlockMatched(f1.getBlocks().size(), false);
     std::vector<bool> f2BlockMatched(f2.getBlocks().size(), false);
@@ -91,6 +106,7 @@ std::vector<TextDiff> App::compare() {
     // 3. Find differences in blocks with Comparator
     // 4. Return differences
     this->counter = 0;
+    printBlocks(f1, f2);
     auto similarBlocks = findSimilarBlocks();
     auto changes = findChanges(similarBlocks);
     return changes;
