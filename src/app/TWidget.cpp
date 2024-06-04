@@ -73,6 +73,8 @@ void TWidget::splitFile() {
 void TWidget::preview() {
     if (this->textEdit->isHidden()) {
         this->readText();
+        QString text = this->textEdit->toPlainText();
+        std::cout << text.length() - 1 << '\n';
         this->textEdit->show();
         this->button->setText("Hide");
     } else {
