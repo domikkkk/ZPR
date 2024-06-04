@@ -120,6 +120,8 @@ TEST(ComparatorTest, splitIntoTokens) {
 TEST(AppTest, compareBasicTest) {
     File f1 = File(fs::path("./test/text_files/paragraphs.txt"));
     File f2 = File(fs::path("./test/text_files/paragraphs_v2.txt"));
+    f1.read(); f2.read();
+    f1.splitByParagraphs(); f2.splitByParagraphs();
     App app = App(f1, f2);
     auto changes = app.compare();
     for (auto change : changes) {

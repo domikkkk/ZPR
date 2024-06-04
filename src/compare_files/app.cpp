@@ -91,16 +91,18 @@ std::vector<TextDiff> App::compare() {
     // 3. Find differences in blocks with Comparator
     // 4. Return differences
     this->counter = 0;
-    f1.read(); f2.read();
-    f1.splitByParagraphs(); f2.splitByParagraphs();
-    this->maxCount += f1.get_size() + f2.get_size();
     auto similarBlocks = findSimilarBlocks();
     auto changes = findChanges(similarBlocks);
     return changes;
 }
 
 
-void App::addFiles(const File &f1, const File &f2) {
+void App::setFiles(const File &f1, const File &f2) {
     this->f1 = f1;
     this->f2 = f2;
+}
+
+
+void App::calculateMaxCount() {
+    this->maxCount = f1.get_size() + f2.get_size();
 }

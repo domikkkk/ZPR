@@ -24,10 +24,12 @@ public:
     void change_filename(const fs::path &new_path);
     bool was_read() const;
     int get_size() const;
+    bool wasSplited() const;
 
     Block &operator[](const size_t &i);
 protected:
     bool m_read = false;
+    bool splited = false;
     fs::path path;
     std::string text;  // all text
     std::vector<Block> blocks;  // blocks of texts
