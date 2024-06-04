@@ -1,3 +1,5 @@
+// Author: Dominik Sidorczuk
+
 #include <legend.hpp>
 #include <QLabel>
 #include <namespaces.hpp>

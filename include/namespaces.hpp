@@ -1,3 +1,5 @@
+// Author: Dominik Sidorczuk
+
 #ifndef COLORS_HPP
 #define COLORS_HPP
 #pragma once

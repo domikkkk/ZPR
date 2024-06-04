@@ -1,3 +1,5 @@
+// Author: Dominik Sidorczuk
+
 #ifndef MERGEDWINDOW_HPP
 #define MERGEDWINDOW_HPP
 #pragma once

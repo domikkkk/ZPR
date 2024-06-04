@@ -1,3 +1,5 @@
+# Author: Dominik Sidorczuk
+
 cmake_minimum_required(VERSION 3.8)
 
 add_library(CompareFiles STATIC "kmp.cpp" "file.cpp" "block.cpp" "textdiff.cpp" "nw.cpp" "change.cpp" "comparator.cpp" "app.cpp")

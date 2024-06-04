@@ -1,3 +1,5 @@
+// Author: Dominik Sidorczuk i Fedir
+
 #include <gtest/gtest.h>
 #include <CompareFiles>
 

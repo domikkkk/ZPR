@@ -1,3 +1,5 @@
+// Author: Dominik Sidorczuk
+
 #ifndef LEGEND_HPP
 #define LEGEND_HPP
 #pragma once

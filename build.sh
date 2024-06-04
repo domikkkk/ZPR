@@ -1,3 +1,5 @@
+# Author: Dominik Sidorczuk
+
 #!/bin/bash
 
 if [ ! -d "build" ]; then
