@@ -3,14 +3,6 @@
 
 #pragma once
 
-#define WIDTH 7  // lepiej nieparzyste dać
-#define TWIDGET_WIDTH WIDTH / 2  // połowa szerokości
-#define TWIDGET_HEIGTH 4
-#define ADDFILEBUTTON 1
-#define RUNBUTTON 3
-#define MERGEBUTTON 4
-#define LEGEND 5
-
 #include <QMainWindow>
 #include <QGridLayout>
 #include <vector>
@@ -29,7 +21,7 @@ public:
 
 private:
     QGridLayout *layout;
-    MergedWindow *mergedWindow;
+    MergedWindow *mergedWindow = 0;
     std::vector<Button*> buttons;
     TWidget *left;
     TWidget *right;

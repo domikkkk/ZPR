@@ -4,15 +4,13 @@
 #include <QtConcurrent/QtConcurrent>
 #include <QCoreApplication>
 #include <QMessageBox>
-#include <cmath>
 #include <TWidget.hpp>
 #include <legend.hpp>
-#include <colors.hpp>
+#include <namespaces.hpp>
 #include <compare_files/textdiff.hpp>
 
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
-   this->mergedWindow = new MergedWindow(new TWidget);
    QLabel *welcome = gen_text("Welcome!", 24, true, this);  // Dodanie głównego napisu
    welcome->setAlignment(Qt::AlignHCenter);
    this->setWindowTitle("Files compare");
@@ -20,18 +18,18 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
 
    this->layout = new QGridLayout;
 
-   this->add_button(new Button("Add file", ADDFILEBUTTON, TWIDGET_WIDTH / 2, this), &MainWindow::addFile);
-   this->add_button(new Button("Add file", ADDFILEBUTTON, WIDTH / 2 + int(std::ceil(float(TWIDGET_WIDTH) / 2.f)), this), &MainWindow::addFile);
-   this->add_button(new Button("Run", RUNBUTTON, TWIDGET_WIDTH, this), &MainWindow::run);
-   this->add_button(new Button("Merge", MERGEBUTTON, TWIDGET_WIDTH, this), &MainWindow::merge);
-   this->add_button(new Button("Legend", LEGEND, TWIDGET_WIDTH, this), &MainWindow::displayLegend);
+   this->add_button(new Button("Add file", MWindow::ADDFILEBUTTON_Y, MWindow::LEFT_ADDFILEBUTTON_X, this), &MainWindow::addFile);
+   this->add_button(new Button("Add file", MWindow::ADDFILEBUTTON_Y, MWindow::RIGHT_ADDFILEBUTTON_X, this), &MainWindow::addFile);
+   this->add_button(new Button("Run", MWindow::RUNBUTTON_Y, MWindow::HALF_WIDTH, this), &MainWindow::run);
+   this->add_button(new Button("Merge", MWindow::MERGEBUTTON_Y, MWindow::HALF_WIDTH, this), &MainWindow::merge);
+   this->add_button(new Button("Legend", MWindow::LEGEND, MWindow::HALF_WIDTH, this), &MainWindow::displayLegend);
    for (auto button: this->buttons) button->setMaximumWidth(100);
 
    this->layout->setVerticalSpacing(20);
-   this->layout->addWidget(welcome, 0, TWIDGET_WIDTH);  // w 0 wierszu, w środkowej kolumnie ustawiony napis
+   this->layout->addWidget(welcome, 0, MWindow::HALF_WIDTH);  // w 0 wierszu, w środkowej kolumnie ustawiony napis
 
    this->layout->setRowStretch(2, 1);  // Rozciągnięcie
-   for (int i = 0; i < WIDTH; ++i) {
+   for (int i = 0; i < MWindow::WIDTH; ++i) {
       this->layout->setColumnStretch(i, 1);
    }
    QWidget *widget = new QWidget(this);
@@ -73,13 +71,13 @@ void MainWindow::addFile() {
       if (filePath.size() == 0) return;
       clickedButton->setText("Change file");
       TWidget *textwidget = new TWidget(File(filePath.toStdString()), this);
-      textwidget->setMaximumWidth(TWIDGET_WIDTH * this->width() / this->layout->columnCount());
-      if (column < TWIDGET_WIDTH) {
+      textwidget->setMaximumWidth(TWindow::WIDTH * this->width() / this->layout->columnCount());
+      if (column < TWindow::WIDTH) {
          this->left = textwidget;
       } else {
          this->right = textwidget;
       }
-      this->layout->addWidget(textwidget, clickedButton->row + 1, column, TWIDGET_HEIGTH, TWIDGET_WIDTH);
+      this->layout->addWidget(textwidget, clickedButton->row + 1, column, TWindow::HEIGTH, TWindow::WIDTH);
    }
 }
 
@@ -88,7 +86,7 @@ void MainWindow::resizeEvent(QResizeEvent *event) {
    QMainWindow::resizeEvent(event);
    QList<TWidget *> twidgets = this->centralWidget()->findChildren<TWidget *>();
    for (TWidget *t : twidgets) {
-      t->setMaximumWidth(TWIDGET_WIDTH * this->width() / this->layout->columnCount());
+      t->setMaximumWidth(TWindow::WIDTH * this->width() / this->layout->columnCount());
    }
 }
 
@@ -168,7 +166,7 @@ void MainWindow::merge() {
    }
    // merging
    if (this->editied) {
-      delete this->mergedWindow;
+      if (this->mergedWindow != 0) delete this->mergedWindow;
       std::string mergedText = "Zmergowany jakiś tekst";
       TWidget *mergedWidget = new TWidget(QString::fromStdString(mergedText), this);
       this->mergedWindow = new MergedWindow(mergedWidget, this);

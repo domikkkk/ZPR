@@ -1,6 +1,6 @@
 #include <legend.hpp>
 #include <QLabel>
-#include <colors.hpp>
+#include <namespaces.hpp>
 
 
 LegendDialog::LegendDialog(QWidget *parent) : QDialog(parent) {
