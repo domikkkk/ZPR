@@ -115,7 +115,6 @@ void MainWindow::run() {
    progressDialog.setWindowTitle("Postęp");
    this->connect(&progressDialog, &QProgressDialog::canceled, this, &MainWindow::onProgressDialogCanceled);
    this->cancel = false;
-   this->progress = 0;
 
    QFuture<void> future = QtConcurrent::run(this, &MainWindow::longRunningTask);
    while (!future.isFinished()) {
