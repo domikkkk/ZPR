@@ -52,11 +52,11 @@ std::vector<std::pair<Block, Block>> App::findSimilarBlocks() {
 
         return a_val > b_val; // Normal comparison
     });
-    for (auto [b1, b2, score] : matches) {
-        std::cout << "[" + b1.getText() + "] ";
-        std::cout << "[" + b2.getText() + "] ";
-        std::cout << score << std::endl;
-    }
+    // for (auto [b1, b2, score] : matches) {
+    //     std::cout << "[" + b1.getText() + "] ";
+    //     std::cout << "[" + b2.getText() + "] ";
+    //     std::cout << score << std::endl;
+    // }
     std::vector<std::pair<Block, Block>> similarBlocks = {};
     std::vector<bool> f1BlockMatched(f1.getBlocks().size(), false);
     std::vector<bool> f2BlockMatched(f2.getBlocks().size(), false);

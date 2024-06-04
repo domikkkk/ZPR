@@ -9,7 +9,6 @@
 #include <button.hpp>
 #include <mergedWindow.hpp>
 #include <compare_files/app.hpp>
-#include <compare_files/textdiff.hpp>
 
 
 class MainWindow : public QMainWindow {

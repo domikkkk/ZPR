@@ -5,6 +5,7 @@
 #include <QMainWindow>
 #include <TWidget.hpp>
 #include <QHBoxLayout>
+#include <compare_files/textdiff.hpp>
 
 
 class MergedWindow : public QMainWindow {
@@ -12,9 +13,11 @@ class MergedWindow : public QMainWindow {
 
 public:
     MergedWindow(TWidget *twidget, QWidget *parent = nullptr);
+    void merge(const std::vector<TextDiff> &diffs);
 
 private:
-    QVBoxLayout *vertical;
+    TWidget *twidget;
+    QVBoxLayout *verticalLayout;
 };
 
 
