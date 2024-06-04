@@ -18,7 +18,8 @@ public:
     std::vector<Block> getBlocks() const;
 
     void read();
-    std::string write(std::string text);
+    void save() const;
+    void write(const std::string &text);
     void split(const std::string &delimiter);
     void splitByParagraphs();
     void change_filename(const fs::path &new_path);

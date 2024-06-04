@@ -38,6 +38,7 @@ private:
 
 public slots:
     void preview();
+    void onSave();
 };
 
 

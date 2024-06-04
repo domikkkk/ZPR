@@ -1,4 +1,5 @@
 #include <TWidget.hpp>
+#include <QFileDialog>
 
 
 TWidget::TWidget(QWidget *parent)
@@ -39,7 +40,9 @@ TWidget::TWidget(const File &file, QWidget *parent) : TWidget(parent) {
 TWidget::TWidget(const QString &text, QWidget *parent) : TWidget(parent) {
     this->textEdit->setPlainText(text);
     this->button->setText("Save");
-    // podłączyć przycisk
+    this->connect(this->button, &QPushButton::clicked, this, &TWidget::onSave);
+    this->file = File();
+    this->file.write(text.toStdString());
     
     this->layout->addWidget(this->scrollArea);
     this->layout->addWidget(this->button, 0, Qt::AlignCenter);
@@ -74,6 +77,39 @@ void TWidget::preview() {
         this->button->setText("Hide");
     } else {
         this->hideText();
+    }
+}
+
+
+void TWidget::onSave() {
+    QString selectedFilter;
+    QString filePath = QFileDialog::getSaveFileName(
+        this,
+        tr("Save File"),
+        "",
+        tr("*.txt;;*.md;;*.cpp;;*.hpp;;*.c;;*.h;;All Files (*)"),
+        &selectedFilter
+    );
+    if (!filePath.isEmpty()) {
+        QString extension;
+        if (selectedFilter.contains("*.txt")) {
+            extension = ".txt";
+        } else if (selectedFilter.contains("*.md")) {
+            extension = ".md";
+        } else if (selectedFilter.contains("*.cpp")) {
+            extension = ".cpp";
+        } else if (selectedFilter.contains("*.hpp")) {
+            extension = ".hpp";
+        } else if (selectedFilter.contains("*.c")) {
+            extension = ".c";
+        } else if (selectedFilter.contains("*.h")) {
+            extension = ".h";
+        }
+        if (!filePath.endsWith(extension, Qt::CaseInsensitive)) {
+            filePath += extension;
+        }
+        this->file.change_filename(filePath.toStdString());
+        this->file.save();
     }
 }
 

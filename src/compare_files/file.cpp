@@ -27,6 +27,22 @@ void File::read() {
 }
 
 
+void File::write(const std::string &text) {
+    this->text = text;
+}
+
+
+void File::save() const {
+    std::ofstream fileStream(this->path);
+    if (fileStream.is_open()) {
+        fileStream << this->text;
+        fileStream.close();
+    } else {
+        std::cerr << "Error: Unable to open file for writing." << std::endl;
+    }
+}
+
+
 void File::change_filename(const fs::path &new_path) {
     this->path = new_path;
     this->m_read = false;
