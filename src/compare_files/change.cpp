@@ -6,11 +6,16 @@ ChangeType Change::getType() const {
 }
 
 
-int Change::getPosition() const {
+size_t Change::getPosition() const {
     return position;
 }
 
 
 std::string Change::getText() const {
     return text;
+}
+
+
+bool Change::operator==(const Change& other) const {
+    return (type == other.getType() && position == other.getPosition() && text == other.getText());
 }
