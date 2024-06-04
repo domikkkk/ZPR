@@ -63,10 +63,10 @@ void MainWindow::addFile() {
 
    int column = clickedButton->column - 1;
    QLayoutItem *item = this->layout->itemAtPosition(clickedButton->row + 1, column);
-   this->can_merge = false;
    if (item) {
       TWidget *twidget = qobject_cast<TWidget*>(item->widget());
       if (filePath.size() != 0) twidget->change_file(filePath);
+      else return;
       twidget->update();
    } else {
       if (filePath.size() == 0) return;
@@ -80,6 +80,7 @@ void MainWindow::addFile() {
       }
       this->layout->addWidget(textwidget, clickedButton->row + 1, column, TWindow::HEIGTH, TWindow::WIDTH);
    }
+   this->can_merge = false;
 }
 
 
@@ -136,12 +137,16 @@ void MainWindow::longRunningTask() {
 
    for (auto change: app.getChanges()) {
       for (auto c: change.getChanges()) {
+         std::size_t pos = c.getPosition();
          switch(c.getType()) {
             case ChangeType::Addition:
-               this->right->highlightTextRange(c.getPosition(), c.getPosition() + c.getText().size(), Colors::GREEN);
+               this->right->highlightTextRange(pos, pos + c.getText().size(), Colors::GREEN);
             break;
             case ChangeType::Deletion:
-               this->left->highlightTextRange(c.getPosition(), c.getPosition() + c.getText().size(), Colors::RED);
+               this->left->highlightTextRange(pos, pos + c.getText().size(), Colors::RED);
+            break;
+            case ChangeType::Shift:
+               this->right->highlightTextRange(change.getModified().getStartPos(), change.getModified().getStartPos() + c.getText().size(), Colors::YELLOW);
             break;
          }
       }

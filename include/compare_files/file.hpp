@@ -27,7 +27,7 @@ public:
     int get_size() const;
     bool wasSplited() const;
 
-    Block &operator[](const size_t &i);
+    Block &operator[](const std::size_t &i);
 protected:
     bool m_read = false;
     bool splited = false;

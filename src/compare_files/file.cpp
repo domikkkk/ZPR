@@ -5,7 +5,7 @@ File::File(const fs::path &path): path(path) {
 }
 
 
-Block &File::operator[](const size_t &i) {
+Block &File::operator[](const std::size_t &i) {
     return this->blocks[i];
 }
 
@@ -114,7 +114,6 @@ void File::splitByParagraphs() {
     }
     if (pos < text.size()) {
         std::size_t start = pos;
-        std::size_t length = totalChars - pos;
         this->blocks.push_back(Block(text.substr(start), start, totalChars));
     }
 }
