@@ -22,6 +22,7 @@ public:
     void hideText();
     void readText();
     void highlightTextRange(const int &from, const int &to, const QColor &color);
+    void clearHighLights();
     const File &getFile() const;
     void splitFile();
 

@@ -103,6 +103,7 @@ void MainWindow::run() {
       t->readText();
       t->hideText();
       t->splitFile();
+      t->clearHighLights();
    }
    File f1 = this->left->getFile();
    File f2 = this->right->getFile();
@@ -138,6 +139,7 @@ void MainWindow::longRunningTask() {
       for (auto c: change.getChanges()) {
          switch(c.getType()) {
             case ChangeType::Addition:
+            std::cout << c.getText() << ' ' << c.getPosition() <<'\n';
                this->right->highlightTextRange(c.getPosition(), c.getPosition() + c.getText().size(), Colors::GREEN);
             break;
             case ChangeType::Deletion:

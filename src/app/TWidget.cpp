@@ -75,7 +75,6 @@ void TWidget::preview() {
     } else {
         this->hideText();
     }
-    std::cout << this->file.getBlocks().size() << '\n';
 }
 
 
@@ -95,6 +94,16 @@ void TWidget::highlightTextRange(const int &from, const int &to, const QColor &c
 
     QTextCharFormat charFormat;
     charFormat.setBackground(color);
+    cursor.setCharFormat(charFormat);
+}
+
+
+void TWidget::clearHighLights() {
+    QTextCursor cursor(this->textEdit->document());
+    cursor.select(QTextCursor::Document); // Wybierz cały dokument
+
+    QTextCharFormat charFormat;
+    charFormat.setBackground(Qt::transparent); // Ustaw tło na przezroczyste, co usuwa podświetlenia
     cursor.setCharFormat(charFormat);
 }
 
