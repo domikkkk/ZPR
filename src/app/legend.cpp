@@ -26,9 +26,8 @@ LegendDialog::LegendDialog(QWidget *parent) : QDialog(parent) {
 
 void LegendDialog::initLegend() {
     this->items = {
-        {Colors::RED, "Zmiana1"},
-        {Colors::GREEN, "Zmiana2"},
-        {Colors::BLUE, "Zmiana3"},
-        {Colors::YELLOW, "Zmiana4"},
+        {Colors::RED, "Deletion"},
+        {Colors::GREEN, "Addittion"},
+        {Colors::YELLOW, "Changes"},
     }; // do zmian pewnie
 }

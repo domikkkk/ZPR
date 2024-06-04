@@ -50,12 +50,13 @@ set(MainWindow_HPP "${CMAKE_SOURCE_DIR}/include/mainwindow.hpp")  # tu jest wła
 set(Button_HPP "${CMAKE_SOURCE_DIR}/include/button.hpp")
 set(TWidget_HPP "${CMAKE_SOURCE_DIR}/include/TWidget.hpp")
 set(Legend_HPP "${CMAKE_SOURCE_DIR}/include/legend.hpp")
+set(MergedWindow_HPP "${CMAKE_SOURCE_DIR}/include/mergedWindow.hpp") 
 
 # adding subdirectory like in src/compare_files/{DIR_NAME}
 add_subdirectory("src/compare_files")
 add_subdirectory("src/app")
 
-target_link_libraries(${PROJECT_NAME} PUBLIC Qt5::Core Qt5::Widgets Qt5::Gui CompareFiles mainwindow)
+target_link_libraries(${PROJECT_NAME} PUBLIC Qt5::Core Qt5::Widgets Qt5::Gui CompareFiles App)
 
 
 FetchContent_Declare(

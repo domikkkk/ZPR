@@ -22,7 +22,7 @@ void App::addUnpairedBlocks(std::vector<bool> const& isMatched, std::vector<std:
 }
 
 
-std::vector<std::pair<Block, Block>> App::findSimilarBlocks() const {
+std::vector<std::pair<Block, Block>> App::findSimilarBlocks() {
     NeedlemanWunsch nw = NeedlemanWunsch();
     Comparator comp = Comparator();
     std::vector<std::tuple<Block, Block, float>> matches;
@@ -35,6 +35,7 @@ std::vector<std::pair<Block, Block>> App::findSimilarBlocks() const {
             float matchValue = nw.computeMatchValue(tokens1, tokens2);
             // Store pair of blocks and match value
             matches.push_back(std::make_tuple(block1, block2, matchValue));
+            ++this->counter;
         }
     }
     // Sort matches by normalized match value
@@ -89,9 +90,17 @@ std::vector<TextDiff> App::compare() {
     // 2. Find similar blocks with NW
     // 3. Find differences in blocks with Comparator
     // 4. Return differences
+    this->counter = 0;
     f1.read(); f2.read();
     f1.splitByParagraphs(); f2.splitByParagraphs();
+    this->maxCount += f1.get_size() + f2.get_size();
     auto similarBlocks = findSimilarBlocks();
     auto changes = findChanges(similarBlocks);
     return changes;
+}
+
+
+void App::addFiles(const File &f1, const File &f2) {
+    this->f1 = f1;
+    this->f2 = f2;
 }

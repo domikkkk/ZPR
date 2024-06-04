@@ -8,6 +8,7 @@
 #include <TWidget.hpp>
 #include <legend.hpp>
 #include <colors.hpp>
+#include <compare_files/textdiff.hpp>
 
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
@@ -45,6 +46,7 @@ MainWindow::~MainWindow() {
       delete child;
    }
    delete this->layout;
+   delete this->mergedWindow;
 }
 
 
@@ -71,6 +73,7 @@ void MainWindow::addFile() {
       clickedButton->setText("Change file");
       TWidget *textwidget = new TWidget(File(filePath.toStdString()), this);
       textwidget->setMaximumWidth(TWIDGET_WIDTH * this->width() / this->layout->columnCount());
+      textwidget->column = column;
       this->layout->addWidget(textwidget, clickedButton->row + 1, column, TWIDGET_HEIGTH, TWIDGET_WIDTH);
    }
 }
@@ -96,16 +99,16 @@ void MainWindow::run() {
       t->hideText();
    }
 
-   QProgressDialog progressDialog("Running...", "Cancel", 0, 100, this);
+   QProgressDialog progressDialog("Running...", "Cancel", 0, this->app.maxCount, this);
    progressDialog.setWindowModality(Qt::WindowModal);
    progressDialog.setWindowTitle("Progress");
-   connect(&progressDialog, &QProgressDialog::canceled, this, &MainWindow::onProgressDialogCanceled);
+   this->connect(&progressDialog, &QProgressDialog::canceled, this, &MainWindow::onProgressDialogCanceled);
    this->cancel = false;
    this->progress = 0;
 
    QFuture<void> future = QtConcurrent::run(this, &MainWindow::longRunningTask);
    while (!future.isFinished()) {
-        progressDialog.setValue(this->progress);
+        progressDialog.setValue(this->app.counter);
         QThread::msleep(100);
    }
 
@@ -120,19 +123,35 @@ void MainWindow::onProgressDialogCanceled() {
 
 void MainWindow::longRunningTask() {
    QList<TWidget *> twidgets = this->centralWidget()->findChildren<TWidget *>();
-   const File &file1 = twidgets[0]->getFile();
-   const File &file2 = twidgets[1]->getFile();
-   for (int i = 0; i < 100; ++i) {
-      // Wykonaj operację
-      // Symulacja czasu potrzebnego na wykonanie obliczeń
-      if (this->cancel) {
-         return;
-      }
-      QThread::msleep(100);
-      ++this->progress;
+   TWidget *left;
+   TWidget *right;
+   if (twidgets[0]->column < twidgets[1]->column) {
+      left = twidgets[0];
+      right = twidgets[1];
+   } else {
+      left = twidgets[1];
+      right = twidgets[0];
    }
-   twidgets[0]->highlightTextRange(10, 30, QColor(Colors::RED));
+   File f1 = left->getFile();
+   File f2 = right->getFile();
+   this->app.addFiles(f1, f2);
+   std::vector<TextDiff> changes = this->app.compare();
+
+   for (auto change: changes) {
+      for (auto c: change.getChanges()) {
+         switch(c.getType()) {
+            case ChangeType::Addition:
+               right->highlightTextRange(c.getPosition(), c.getPosition() + c.getText().size(), Colors::GREEN);
+            break;
+            case ChangeType::Deletion:
+               left->highlightTextRange(c.getPosition(), c.getPosition() + c.getText().size(), Colors::RED);
+            break;
+         }
+      }
+   }
+   
    this->can_merge = true;
+   this->editied = true;
    return;
 }
 
@@ -149,12 +168,12 @@ void MainWindow::merge() {
       return;
    }
    // merging
-   std::string mergedText = "Zmergowane jakiś tekst";
-   QMainWindow *mergedWindow = new QMainWindow(this);
-   mergedWindow->setWindowTitle("Merged Text");
-
-   TWidget *mergedWidget = new TWidget(QString::fromStdString(mergedText), mergedWindow);
-   mergedWindow->setCentralWidget(mergedWidget);
-   mergedWindow->resize(800, 600);
-   mergedWindow->show();
+   if (this->editied) {
+      std::string mergedText = "Zmergowany jakiś tekst";
+      TWidget *mergedWidget = new TWidget(QString::fromStdString(mergedText), this);
+      this->mergedWindow = new MergedWindow(mergedWidget, this);
+      this->editied = false;
+   }
+   
+   this->mergedWindow->show();
 }
