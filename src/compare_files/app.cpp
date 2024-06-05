@@ -1,4 +1,5 @@
 #include <compare_files/app.hpp>
+#include <algorithm>
 
 
 int App::findBlockIdx(const std::vector<Block>& blocks, Block& block) const {

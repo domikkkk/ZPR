@@ -18,7 +18,7 @@ MergedWindow::MergedWindow(TWidget *twidget, QWidget *parent): QMainWindow(paren
     QWidget *changescontainer = new QWidget(this);
     this->verticalLayout = new QVBoxLayout(changescontainer);
 
-    QLabel *title = gen_text("Dodanie", 18, true, this);
+    QLabel *title = gen_text("Dodane", 18, true, this);
     title->setAlignment(Qt::AlignCenter);
     this->verticalLayout->addWidget(title);
 
