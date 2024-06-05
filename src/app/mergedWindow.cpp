@@ -43,7 +43,7 @@ void MergedWindow::merge(const std::vector<TextDiff> &diffs) {
             if (change.getType() == ChangeType::Addition) {
                 newText += change.getText();
                 wasAdd = true;
-            } else {
+            } else if (change.getType() == ChangeType::Deletion) {
                 this->twidget->highlightTextRange(change.getPosition(), change.getPosition() + change.getText().size(), Colors::RED);
             }
         }
