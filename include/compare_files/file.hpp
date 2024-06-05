@@ -1,3 +1,4 @@
+// Author: Fedir Tsupin, Dominik Sidorczuk
 #ifndef FILE_HPP
 #define FILE_HPP
 #pragma once

@@ -1,3 +1,4 @@
+// Author: Fedir Tsupin
 #include <compare_files/textdiff.hpp>
 
 

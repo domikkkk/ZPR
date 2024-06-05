@@ -1,4 +1,4 @@
-// Author: Dominik Sidorczuk i Fedir
+// Author: Dominik Sidorczuk i Fedir Tsupin
 
 #include <gtest/gtest.h>
 #include <CompareFiles>

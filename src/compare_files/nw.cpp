@@ -1,3 +1,4 @@
+// Author: Fedir Tsupin
 #include <algorithm>
 #include <compare_files/nw.hpp>
 
@@ -7,41 +8,12 @@ float NeedlemanWunsch::getAlignmentScore() const {
 }
 
 
-std::pair<std::vector<std::string>, std::vector<std::string>> NeedlemanWunsch::getAlignments() const {
-    return alignments;
-}
-
 Matrix NeedlemanWunsch::createMatrix(int rows, int cols) {
     Matrix matrix(new std::unique_ptr<int[]>[rows]);
     for (int i = 0; i < rows; ++i) {
         matrix[i].reset(new int[cols]);
     }
     return matrix;
-}
-
-
-std::pair<std::vector<std::string>, std::vector<std::string>> NeedlemanWunsch::reconstructAlignment(const std::vector<std::string>& s1, const std::vector<std::string>& s2, const Matrix& dp) {
-    std::vector<std::string> aligneds1, aligneds2;
-    int i = s1.size(), j = s2.size();
-    while (i > 0 || j > 0) {
-        if (i > 0 && j > 0 && dp[i][j] == dp[i - 1][j - 1] + (s1[i - 1] == s2[j - 1] ? matchScore : mismatchScore)) {
-            aligneds1.push_back(s1[i - 1]);
-            aligneds2.push_back(s2[j - 1]);
-            --i;
-            --j;
-        } else if (i > 0 && dp[i][j] == dp[i - 1][j] + gapPenalty) {
-            aligneds1.push_back(s1[i - 1]);
-            aligneds2.push_back("<<gap>>");
-            --i;
-        } else {
-            aligneds1.push_back("<<gap>>");
-            aligneds2.push_back(s2[j - 1]);
-            --j;
-        }
-    }
-    std::reverse(aligneds1.begin(), aligneds1.end());
-    std::reverse(aligneds2.begin(), aligneds2.end());
-    return std::make_pair(aligneds1, aligneds2);
 }
 
 
@@ -65,7 +37,6 @@ float NeedlemanWunsch::computeMatchValue(const std::vector<std::string>& s1, con
             dp[i][j] = std::max({match, deleteGap, insertGap});
         }
     }
-    this->alignments = reconstructAlignment(s1, s2, dp);
     this->alignmentScore = float(dp[m][n]) / float(std::max(s1.size(), s2.size()));
     return alignmentScore;
 }

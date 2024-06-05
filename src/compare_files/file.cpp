@@ -1,3 +1,4 @@
+// Author: Fedir Tsupin, Dominik Sidorczuk
 #include <compare_files/file.hpp>
 
 
@@ -101,7 +102,6 @@ void File::splitByParagraphs() {
             nrOfNewLines++;
         }
     }
-    std::cout<<"Nr of new lines:" << nrOfNewLines << std::endl;
     if (pos < text.size()) {
         std::size_t start = pos;
         std::size_t length = totalChars - pos;

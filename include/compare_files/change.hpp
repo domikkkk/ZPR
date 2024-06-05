@@ -1,3 +1,4 @@
+// Author: Fedir Tsupin
 #ifndef CHANGE_HPP
 #define CHANGE_HPP
 #pragma once

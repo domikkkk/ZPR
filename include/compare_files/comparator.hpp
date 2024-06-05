@@ -1,3 +1,4 @@
+// Author: Fedir Tsupin
 #ifndef COMPARATOR_HPP
 #define COMPARATOR_HPP
 #pragma once
