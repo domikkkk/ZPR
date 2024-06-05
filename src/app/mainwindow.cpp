@@ -169,7 +169,7 @@ void MainWindow::merge() {
       return;
    }
    if (this->editied) {
-      if (this->mergedWindow != 0) delete this->mergedWindow;
+      // if (this->mergedWindow != 0) delete this->mergedWindow;
       std::string TextToMerge = this->left->getFile().getText();
       TWidget *mergedWidget = new TWidget(QString::fromStdString(TextToMerge), this);
       this->mergedWindow = new MergedWindow(mergedWidget, this);
