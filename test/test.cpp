@@ -1,4 +1,4 @@
-// Author: Dominik Sidorczuk i Fedir
+// Author: Dominik Sidorczuk i Fedir Tsupin
 
 #include <gtest/gtest.h>
 #include <CompareFiles>
@@ -96,42 +96,6 @@ TEST(ComparatorTest, splitIntoTokens) {
     ASSERT_EQ(tokens[4], "brown");
     ASSERT_EQ(tokens[5], " ");
     ASSERT_EQ(tokens[6], "fox");
-}
-
-
-TEST(AppTest, compareBasicTest) {
-    File f1 = File(fs::path("./test/text_files/paragraphs.txt"));
-    File f2 = File(fs::path("./test/text_files/paragraphs_v2.txt"));
-    f1.read(); f2.read();
-    f1.splitByParagraphs(); f2.splitByParagraphs();
-    for (auto block : f1.getBlocks()) {
-        std::cout << block.getText() << " " << block.getNewLinesBefore() << std::endl;
-    }
-    for (auto block : f2.getBlocks()) {
-        std::cout << block.getText() << " " << block.getNewLinesBefore() << std::endl;
-    }
-    App app = App(f1, f2);
-    app.compare();
-    auto changes = app.getChanges();
-    for (auto change : changes) {
-        std::cout << "Original:[" + change.getOriginal().getText() + "] " << change.getOriginal().getStartPos() << " " << change.getOriginal().getEndPos() << std::endl;
-        std::cout << "Modified:[" + change.getModified().getText() + "]" << change.getModified().getStartPos() << " " << change.getModified().getEndPos() << std::endl;
-        for (auto c : change.getChanges()) {
-            switch(c.getType()) {
-                case ChangeType::Addition:
-                    std::cout << "Addition: ";
-                    break;
-                case ChangeType::Deletion:
-                    std::cout << "Deletion: ";
-                    break;
-                case ChangeType::Shift:
-                    std::cout << "Shift: ";
-                    break;
-            }
-            std::cout << "[" + c.getText() + "] ";
-            std::cout << c.getPosition() << std::endl;
-        }
-    }
 }
 
 

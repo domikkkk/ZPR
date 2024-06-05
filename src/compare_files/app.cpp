@@ -1,3 +1,4 @@
+// Author: Fedir Tsupin, Dominik Sidorczuk
 #include <compare_files/app.hpp>
 #include <algorithm>
 
@@ -27,14 +28,11 @@ std::vector<std::pair<Block, Block>> App::findSimilarBlocks() {
     NeedlemanWunsch nw = NeedlemanWunsch();
     Comparator comp = Comparator();
     std::vector<std::tuple<Block, Block, float>> matches;
-    // Iterate through all pairs of blocks from f1 and f2
     for (const Block& block1 : f1.getBlocks()) {
         for (const Block& block2 : f2.getBlocks()) {
-            // Compute match value
             std::vector<std::string> tokens1 = comp.splitIntoTokens(block1.getText());
             std::vector<std::string> tokens2 = comp.splitIntoTokens(block2.getText());
             float matchValue = nw.computeMatchValue(tokens1, tokens2);
-            // Store pair of blocks and match value
             matches.push_back(std::make_tuple(block1, block2, matchValue));
             ++this->counter;
         }
@@ -53,7 +51,6 @@ std::vector<std::pair<Block, Block>> App::findSimilarBlocks() {
     std::vector<std::pair<Block, Block>> similarBlocks = {};
     std::vector<bool> f1BlockMatched(f1.getBlocks().size(), false);
     std::vector<bool> f2BlockMatched(f2.getBlocks().size(), false);
-    // Convert sorted matches into vector of pairs of blocks
     for (auto blockPair : matches) {
         auto f1BlockIdx = findBlockIdx(f1.getBlocks(), std::get<0>(blockPair));
         auto f2BlockIdx = findBlockIdx(f2.getBlocks(), std::get<1>(blockPair));

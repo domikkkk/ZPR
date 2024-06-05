@@ -1,3 +1,4 @@
+// Author: Fedir Tsupin, Dominik Sidorczuk
 #ifndef APP_HPP
 #define APP_HPP
 #pragma once

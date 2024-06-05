@@ -1,3 +1,4 @@
+// Author: Dominik Sidorczuk
 #include <compare_files/kmp.hpp>
 
 

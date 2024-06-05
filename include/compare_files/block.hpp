@@ -1,3 +1,4 @@
+// Author: Fedir Tsupin
 #ifndef TEXT_HPP
 #define TEXT_HPP
 #pragma once

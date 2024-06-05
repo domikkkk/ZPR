@@ -1,3 +1,4 @@
+// Author: Fedir Tsupin
 #ifndef NW_HPP
 #define NW_HPP
 #pragma once
@@ -13,20 +14,14 @@ class NeedlemanWunsch {
 private:
     const int matchScore, mismatchScore, gapPenalty;
     float alignmentScore;
-    std::pair<std::vector<std::string>, std::vector<std::string>> alignments;
 public:
     float computeMatchValue(const std::vector<std::string>& s1, const std::vector<std::string>& s2);
     NeedlemanWunsch(int matchScore=1, int mismatchScore=-1, int gapPenalty=-1)
-        : matchScore(matchScore), mismatchScore(mismatchScore), gapPenalty(gapPenalty), alignmentScore(0) {
-            std::vector<std::string> a, b;
-            alignments = std::make_pair(a, b);
-        };
+        : matchScore(matchScore), mismatchScore(mismatchScore), gapPenalty(gapPenalty), alignmentScore(0) {};
     float getAlignmentScore() const;
-    std::pair<std::vector<std::string>, std::vector<std::string>> getAlignments() const;
 private:
     Matrix createMatrix(int rows, int cols);
     void deleteMatrix(int** matrix, int rows);
-    std::pair<std::vector<std::string>, std::vector<std::string>> reconstructAlignment(const std::vector<std::string>& s1, const std::vector<std::string>& s2, const Matrix& dp);
 };
 
 #endif
