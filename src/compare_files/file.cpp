@@ -5,7 +5,7 @@ File::File(const fs::path &path): path(path) {
 }
 
 
-Block &File::operator[](const size_t &i) {
+Block &File::operator[](const std::size_t &i) {
     return this->blocks[i];
 }
 

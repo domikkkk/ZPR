@@ -1,3 +1,5 @@
+# Author: Dominik Sidorczuk
+
 cmake_minimum_required(VERSION 3.8)
 
 # definicja MainWindow_HPP w głównym cmake wraz z objaśnieniem dlaczego tak, a nie inaczej.

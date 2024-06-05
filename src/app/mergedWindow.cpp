@@ -1,3 +1,5 @@
+// Author: Dominik Sidorczuk
+
 #include <mergedWindow.hpp>
 #include <QVBoxLayout>
 #include <QScrollArea>
@@ -13,26 +15,21 @@ MergedWindow::MergedWindow(TWidget *twidget, QWidget *parent): QMainWindow(paren
 
     horizontalLayout->addWidget(twidget, 2);
 
-    // Sekcja z przyciskami po prawej stronie
     QWidget *changescontainer = new QWidget(this);
     this->verticalLayout = new QVBoxLayout(changescontainer);
 
-    QLabel *title = gen_text("Dodanie", 18, true, this);
+    QLabel *title = gen_text("Dodane", 18, true, this);
     title->setAlignment(Qt::AlignCenter);
     this->verticalLayout->addWidget(title);
 
-    // Ustawienie układu dla kontenera przycisków
     changescontainer->setLayout(this->verticalLayout);
 
-    // Dodanie kontenera przycisków do przewijalnego obszaru
     QScrollArea *scrollArea = new QScrollArea(this);
     scrollArea->setWidget(changescontainer);
     scrollArea->setWidgetResizable(true);
 
-    // Dodanie przewijalnego obszaru do głównego układu
     horizontalLayout->addWidget(scrollArea, 1);
 
-    // Ustawienie głównego widgetu centralnego
     centralWidget->setLayout(horizontalLayout);
     this->setCentralWidget(centralWidget);
 }

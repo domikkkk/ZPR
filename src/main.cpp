@@ -1,3 +1,5 @@
+// Author: Dominik Sidorczuk
+
 #include <mainwindow.hpp>
 #include <QApplication>
 

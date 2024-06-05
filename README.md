@@ -44,7 +44,6 @@ to run tests:
 ## File structure
 
 ```txt
-<project root>
 ├── CMakeLists.txt
 ├── README.md
 ├── build.sh
@@ -53,21 +52,32 @@ to run tests:
 │   ├── TWidget.hpp
 │   ├── button.hpp
 │   ├── compare_files
+│   │   ├── app.hpp
 │   │   ├── block.hpp
+│   │   ├── change.hpp
+│   │   ├── comparator.hpp
 │   │   ├── file.hpp
 │   │   ├── kmp.hpp
 │   │   ├── nw.hpp
 │   │   └── textdiff.hpp
-│   └── mainwindow.hpp
+│   ├── legend.hpp
+│   ├── mainwindow.hpp
+│   ├── mergedWindow.hpp
+│   └── namespaces.hpp
 ├── src
 │   ├── app
 │   │   ├── CMakeLists.txt
 │   │   ├── TWidget.cpp
 │   │   ├── button.cpp
-│   │   └── mainwindow.cpp
+│   │   ├── legend.cpp
+│   │   ├── mainwindow.cpp
+│   │   └── mergedWindow.cpp
 │   ├── compare_files
 │   │   ├── CMakeLists.txt
+│   │   ├── app.cpp
 │   │   ├── block.cpp
+│   │   ├── change.cpp
+│   │   ├── comparator.cpp
 │   │   ├── file.cpp
 │   │   ├── kmp.cpp
 │   │   ├── nw.cpp
@@ -75,5 +85,11 @@ to run tests:
 │   └── main.cpp
 └── test
     ├── test.cpp
-    └── test_file.txt
+    └── text_files
+        ├── letters.txt
+        ├── letters_v2.txt
+        ├── par.txt
+        ├── paragraphs.txt
+        ├── paragraphs_v2.txt
+        └── test_file.txt
 ```

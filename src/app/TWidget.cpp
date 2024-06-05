@@ -1,3 +1,5 @@
+// Author: Dominik Sidorczuk
+
 #include <TWidget.hpp>
 #include <QFileDialog>
 

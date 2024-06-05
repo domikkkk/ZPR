@@ -1,3 +1,5 @@
+// Author: Dominik Sidorczuk
+
 #ifndef TWIDGET_HPP
 #define TWIDGET_HPP
 

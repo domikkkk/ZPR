@@ -1,3 +1,5 @@
+# Author: Dominik Sidorczuk
+
 cmake_minimum_required(VERSION 3.8)
 include(FetchContent)
 
@@ -26,9 +28,9 @@ target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_SOURCE_DIR}/include)
 
 
 # Internet mówi, że trzeba dodać plik nagłówkowy do kompilacji też jak w gre wchodzi macro Q_OBJECT, które jest ponoć potrzebne w jakimś stopniu.
-# Cmake jest upośledzony i trzeba mu samemu ustawić plik nagłówkowy do kompilacji, bo mimo tego target_include_directories (wyżej) nie znajduje tego co powinien.
+# Cmake nie umie i trzeba mu samemu ustawić plik nagłówkowy do kompilacji, bo mimo tego target_include_directories (wyżej) nie znajduje tego co powinien.
 # Trzeba to dać, bo inaczej wie co to Q_OBJECT, ale nie wie gdzie ma znaleźć tablice funkcji wirtualnych dla konstruktorów,
-# destruktorów, funkcji ect. dla naszej klasy MainWindow, w której mamy to coś.
+# destruktorów, funkcji ect. dla naszej np. klasy MainWindow, w której mamy to coś.
 # A Tu przybliżona definicja Q_OBJECT skopiowana z biblioteki:
 
 # #define Q_OBJECT \
@@ -46,6 +48,7 @@ target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_SOURCE_DIR}/include)
 #     QT_WARNING_POP \
 #     struct QPrivateSignal {}; \
 #     QT_ANNOTATE_CLASS(qt_qobject, "")
+
 set(MainWindow_HPP "${CMAKE_SOURCE_DIR}/include/mainwindow.hpp")  # tu jest właśnie danie wskazania na nasz plik hpp
 set(Button_HPP "${CMAKE_SOURCE_DIR}/include/button.hpp")
 set(TWidget_HPP "${CMAKE_SOURCE_DIR}/include/TWidget.hpp")

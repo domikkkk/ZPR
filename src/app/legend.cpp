@@ -1,3 +1,5 @@
+// Author: Dominik Sidorczuk
+
 #include <legend.hpp>
 #include <QLabel>
 #include <namespaces.hpp>
@@ -28,6 +30,6 @@ void LegendDialog::initLegend() {
     this->items = {
         {Colors::RED, "Usunięcie"},
         {Colors::GREEN, "Dodanie"},
-        {Colors::YELLOW, "Zmiana"},
-    }; // do zmian pewnie
+        {Colors::YELLOW, "Przesunięcie"},
+    };
 }
