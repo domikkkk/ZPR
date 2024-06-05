@@ -104,7 +104,6 @@ void File::splitByParagraphs() {
     std::cout<<"Nr of new lines:" << nrOfNewLines << std::endl;
     if (pos < text.size()) {
         std::size_t start = pos;
-        std::size_t length = totalChars - pos;
         this->blocks.push_back(Block(text.substr(start), start, totalChars, nrOfNewLines));
     }
 }
