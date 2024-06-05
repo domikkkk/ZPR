@@ -14,9 +14,9 @@ void App::addUnpairedBlocks(std::vector<bool> const& isMatched, std::vector<std:
     for (size_t i = 0; i < isMatched.size(); ++i) {
         if (!isMatched[i]) {
             if (wasAdded)
-                similarBlocks.push_back(std::make_pair(Block("", -1, -1), f2.getBlocks()[i]));
+                similarBlocks.push_back(std::make_pair(Block("", -1, -1, 0), f2.getBlocks()[i]));
             else
-                similarBlocks.push_back(std::make_pair(f1.getBlocks()[i], Block("", -1, -1)));
+                similarBlocks.push_back(std::make_pair(f1.getBlocks()[i], Block("", -1, -1, 0)));
         }
     }
 }
@@ -72,7 +72,7 @@ void App::findChanges(std::vector<std::pair<Block, Block>> similarBlocks) {
     this->changes.clear();
     Comparator comp = Comparator();
     for (auto [original, modified] : similarBlocks) {
-        auto changesInBlocks = comp.detectChanges(original.getText(), modified.getText(), original.getStartPos(), modified.getStartPos());
+        auto changesInBlocks = comp.detectChanges(original.getText(), modified.getText(), original.getStartPos(), modified.getStartPos(), original.getNewLinesBefore(), modified.getNewLinesBefore());
         this->changes.push_back(TextDiff(original, modified, changesInBlocks));
     }
 }

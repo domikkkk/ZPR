@@ -36,7 +36,7 @@ std::wstring utf8_to_wstring(const std::string& utf8str) {
 }
 
 
-std::vector<Change> Comparator::detectChanges(const std::string& text1, const std::string& text2, int startPos1, int startPos2) const {
+std::vector<Change> Comparator::detectChanges(const std::string& text1, const std::string& text2, int startPos1, int startPos2, int newLinesBefore1, int newLinesBefore2) const {
     std::vector<std::string> tokens1 = splitIntoTokens(text1);
     std::vector<std::string> tokens2 = splitIntoTokens(text2);
     std::vector<Change> changes;
@@ -44,7 +44,7 @@ std::vector<Change> Comparator::detectChanges(const std::string& text1, const st
     size_t i = 0, j = 0;
     size_t position1 = startPos1;
     size_t position2 = startPos2;
-    if (text1 == text2 && startPos1 != startPos2) {
+    if (text1 == text2 && newLinesBefore1 != newLinesBefore2) {
         changes.push_back(Change(ChangeType::Shift, startPos1, text1));
     }
     else {

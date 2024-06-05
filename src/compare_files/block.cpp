@@ -16,6 +16,10 @@ int Block::getEndPos() const {
 }
 
 
+int Block::getNewLinesBefore() const {
+    return newLinesBefore;
+}
+
 bool Block::operator==(const Block& other) const {
     return (other.getText() == text && other.getStartPos() == startPos && other.getEndPos() == endPos);
 }

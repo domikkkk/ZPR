@@ -64,19 +64,6 @@ std::vector<Block> File::getBlocks() const {
 }
 
 
-void File::split(const std::string &delimiter) {
-    std::size_t pos = 0;
-    std::size_t found;
-
-    while ((found = text.find(delimiter, pos)) != std::string::npos) {
-        this->blocks.push_back(Block(text.substr(pos, found - pos), pos, found));
-        pos = found + delimiter.size();
-    }
-
-    this->blocks.push_back(Block(text.substr(pos), pos, text.size()));
-}
-
-
 std::size_t countCharacters(const std::string& filename) {
     std::wifstream file(filename, std::ios::binary);
     if (!file.is_open()) {
@@ -99,23 +86,26 @@ void File::splitByParagraphs() {
     std::size_t found;
     this->splited = true;
     const std::string delimiter = "\n\n";
-
+    int nrOfNewLines = 0;
     std::size_t totalChars = countCharacters(path.string());
 
     while ((found = text.find(delimiter, pos)) != std::string::npos) {
         std::size_t start = pos;
         std::size_t length = found - pos;
-        this->blocks.push_back(Block(text.substr(start, length), start, found));
+        this->blocks.push_back(Block(text.substr(start, length), start, found, nrOfNewLines));
+        nrOfNewLines += 2;
 
         pos = found + delimiter.size();
         while (text[pos] == '\n') {
             pos++;
+            nrOfNewLines++;
         }
     }
+    std::cout<<"Nr of new lines:" << nrOfNewLines << std::endl;
     if (pos < text.size()) {
         std::size_t start = pos;
         std::size_t length = totalChars - pos;
-        this->blocks.push_back(Block(text.substr(start), start, totalChars));
+        this->blocks.push_back(Block(text.substr(start), start, totalChars, nrOfNewLines));
     }
 }
 
